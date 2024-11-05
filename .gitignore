@@ -1,0 +1,71 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Next.js
+.next/
+out/
+
+# NestJS
+dist/
+
+# Logs
+logs
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build tools
+build/
+.cache/
+.parcel-cache/
+
+# Testing
+coverage/
+
+# Miscellaneous
+*.orig
+*.rej
+*.bak
+*.swp
+*.swo
+*.tmp
+*.tmp.*
+*.temp
+*.temp.*
+*.log
+*.log.*
+*.lock
+*.lock.*
+*.pid
+*.pid.*
+*.out
+*.out.*
+*.err
+*.err.*
+*.mdb
+*.mdb.*
+*.sqlite
+*.sqlite.*
+*.sqlite3
+*.sqlite3.*
+*.db
+*.db.*
+*.sql
+*.sql.*
