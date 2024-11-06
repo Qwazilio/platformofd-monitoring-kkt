@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Terminal } from 'src/entities/terminal.entity';
 import { DeleteResult, Repository } from 'typeorm';
@@ -20,6 +20,15 @@ export class TerminalService {
         const terminal = await this.terminalRepository.findOne({where: {id: terminal_id}})
         if(!terminal) throw new NotFoundException('Terminal not found!')
         return terminal;
+    }
+
+    async add(terminal: Partial<Terminal>) : Promise<Terminal> {
+        const terminal_old = await this.terminalRepository.findOne({where:{uid_terminal: terminal.uid_terminal}})
+        if(terminal_old) throw new ConflictException(`Terminal with UID:${terminal.uid_terminal} already exists`)
+        const terminal_new = this.terminalRepository.create(
+            terminal
+        )        
+        return await this.terminalRepository.save(terminal_new)
     }
 
     async update(terminal_updated: Terminal) : Promise<Terminal>{

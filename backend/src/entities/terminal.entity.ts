@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Card } from "./card.entity";
 
 @Entity('terminal')
@@ -10,7 +10,7 @@ export class Terminal{
     uid_terminal: number
 
     @Column({nullable: true})
-    organization: string
+    reg_number: number
 
     @Column({nullable: false})
     name_terminal: string
@@ -24,7 +24,8 @@ export class Terminal{
     @Column({nullable: true})
     address: string
 
-    @OneToOne(() => Card)
+    @OneToOne(() => Card, {nullable: true})
+    @JoinColumn()
     active_card: Card
 
     @OneToMany(() => Card, (card) => card.terminal)
@@ -33,4 +34,6 @@ export class Terminal{
     @Column({nullable: true})
     end_date_sub: Date
 
+    @Column({nullable: false, default: false})
+    deleted: boolean
 }

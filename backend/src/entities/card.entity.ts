@@ -14,4 +14,7 @@ export class Card{
 
     @OneToOne(() => Terminal, (terminal) => terminal.cards, {nullable: false})
     terminal: Terminal
+
+    @Column({nullable: false, default: true})
+    status: boolean
 }
