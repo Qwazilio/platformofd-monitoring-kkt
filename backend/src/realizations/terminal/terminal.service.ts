@@ -22,6 +22,12 @@ export class TerminalService {
         return terminal;
     }
 
+    async getOneByUid({uid_terminal} : {uid_terminal: number}) : Promise<Terminal>{
+        const terminal = await this.terminalRepository.findOne({where: {uid_terminal: uid_terminal}})
+        if(!terminal) throw new NotFoundException('Terminal not found!')
+        return terminal;
+    }
+
     async add(terminal: Partial<Terminal>) : Promise<Terminal> {
         const terminal_old = await this.terminalRepository.findOne({where:{uid_terminal: terminal.uid_terminal}})
         if(terminal_old) throw new ConflictException(`Terminal with UID:${terminal.uid_terminal} already exists`)
@@ -31,10 +37,20 @@ export class TerminalService {
         return await this.terminalRepository.save(terminal_new)
     }
 
-    async update(terminal_updated: Terminal) : Promise<Terminal>{
+    async update(terminal_updated: Partial<Terminal>) : Promise<Terminal>{
         const terminal = await this.terminalRepository.findOneBy({id: terminal_updated.id})
         if(!terminal) throw new NotFoundException('Terminal not found!')
-        return await this.terminalRepository.save(terminal_updated);
+        this.terminalRepository.merge(terminal, terminal_updated)
+        return await this.terminalRepository.save(terminal);
+    }
+
+    async upsert(terminal_updated: Terminal) : Promise<Terminal>{
+        const terminal = await this.terminalRepository.findOneBy({uid_terminal: terminal_updated.uid_terminal});
+        if(!terminal) {
+            return await this.add(terminal_updated)
+        };
+        this.terminalRepository.merge(terminal, terminal_updated)
+        return await this.terminalRepository.save(terminal);
     }
 
     async remove(terminal_id: number) : Promise<DeleteResult>{

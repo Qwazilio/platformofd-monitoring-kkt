@@ -1,6 +1,8 @@
 "use client";
+import useSocket from "@/hooks/useSocket";
 import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
+import classes from "@/components/terminalImport.module.scss"
 
 const convertExcelDateToJSDate = (excelDate) => {
   const date = new Date((excelDate - 25569) * 86400 * 1000);
@@ -9,8 +11,10 @@ const convertExcelDateToJSDate = (excelDate) => {
 
 interface TerminalImportProps {}
 export default function TerminalImport({}: TerminalImportProps) {
+  const socket = useSocket()
   const [terminals, setTerminals] = useState<TerminalEntity[]>([]);
   const [cards, setCards] = useState<CardEntity[]>([])
+  const [isDisabled, setisDisabled] = useState<boolean>(true);
 
   const handleFileUpload = (event: any) => {
     const file = event.target.files[0];
@@ -32,31 +36,44 @@ export default function TerminalImport({}: TerminalImportProps) {
         comment: row["Дополнительный идентификатор"] as string,
         address: row["Адрес кассы"] as string,
         date_end_sub: convertExcelDateToJSDate(row["Дата окончания подписки"]) as Date,
-      } as TerminalEntity));
-      const cardData = json.map((row) => ({
-        end_date_card: convertExcelDateToJSDate(
-          row["Прогнозируемая дата окончания ФН"] as Date
-        ),
-        uid_card: row["ФН"] as number,
-      } as CardEntity));
+        card: {
+          end_date_card: convertExcelDateToJSDate(
+            row["Прогнозируемая дата окончания ФН"] as Date
+          ),
+          uid_card: row["ФН"] as number,
+          uid_terminal: row["ЗН"] as number,
+        }
+      }));
+
       setTerminals(terminalData)
-      
     };
 
     reader.readAsArrayBuffer(file);
   };
 
-  useEffect(() => {
-    console.log(terminals);
+  useEffect(() =>{
+    if(terminals.length > 0)
+      setisDisabled(false)
   }, [terminals])
 
+  const sendOnServer = () => {
+    if(!socket) return;
+    const socketData = {
+      terminals: terminals
+    }
+    console.log(socketData)
+    socket.emit('import', socketData)
+  }
+
+
   return (
-    <div>
+    <div className={classes.wrapper}>
       <input
         onChange={(event) => handleFileUpload(event)}
         type="file"
         accept=".xlsx, .xls"
-      />
+      />      
+      <button onClick={() => sendOnServer()} disabled={isDisabled}>Загрузить на сервер</button>
     </div>
   );
 }

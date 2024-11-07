@@ -1,5 +1,5 @@
 'use client'
-import classes from "@/terminals/terminalSearch.module.scss"
+import classes from "@/components/terminalSearch.module.scss"
 
 export default function TerminalSerach(){
     return(

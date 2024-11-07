@@ -8,9 +8,6 @@ export default function useSocket(key?: string) {
     const [socket, setSocket] = useState<Socket | null>(null);
     useEffect(() => {
         const connection = io(SOCKET_URL, {
-            auth: { 
-                key: key 
-            },
             transports: ['websocket']
             
         });

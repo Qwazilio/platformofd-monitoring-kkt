@@ -1,5 +1,5 @@
 import TerminalList from "@/components/TerminalList";
-import classes from '@/terminals/page.module.scss'
+import classes from '@/components/page.module.scss'
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
         <TerminalList />
       </main>
       <footer>
-
+        
       </footer>
     </div>
   );

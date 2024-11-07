@@ -1,13 +1,24 @@
 @import '@/variables';
 
+
+.tools{
+    display: flex;
+    justify-content: space-between;
+
+    button{
+        background-color: $background-color-special-ui;
+        padding: 0.5em;
+        border-radius: 0.5em;
+    }
+}
+
 .wrapper{
-    
 
     .terminal{
         background-color: $background-color-window;
         color: $text-color-window;
         margin: 0.5em;
         padding: 0.5em;
-    
+        border-radius: 0.25em;
     }
 }

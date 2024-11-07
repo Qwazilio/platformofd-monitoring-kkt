@@ -1,0 +1,27 @@
+@import '@/variables';
+
+.wrapper{
+    background-color: $background-color;
+    position: absolute;
+    user-select: none;
+    border-radius: $border-radius-em;    
+    border: solid $border-color;
+    overflow: hidden;
+    color: white;
+
+    .top{
+        width: 100%;
+        background-color: $background-color-special-ui;
+        padding: 0.25em;
+        display: flex;
+        justify-content: space-between;
+
+        .cancel{
+            cursor: pointer;
+        }
+    }
+    .body{
+        width: 100%;
+        padding: 0.25em;
+    }
+}

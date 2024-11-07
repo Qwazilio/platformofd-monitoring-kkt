@@ -1,0 +1,17 @@
+@import '@/variables';
+
+.wrapper{
+    display: flex;
+    flex-direction: column;
+
+    input, button{
+        margin: 0.25em;
+        padding: 0.5em;
+        border-radius: 0.25em;
+    }
+
+    button{
+        background-color: $background-color-special-ui;
+
+    }
+}
