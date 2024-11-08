@@ -19,7 +19,7 @@ export class TerminalGateway implements OnGatewayConnection, OnGatewayDisconnect
   ){}
 
   handleConnection(client: Socket) {
-    console.log(`Client ALO connected: ${client.id}`);
+    console.log(`Client connected: ${client.id}`);
   }
 
   handleDisconnect(client: Socket) {
@@ -34,14 +34,15 @@ export class TerminalGateway implements OnGatewayConnection, OnGatewayDisconnect
     for (const terminal of terminals) {
       const _terminal = await this.terminalService.upsert(terminal as Terminal);
       const _card = await this.cardService.upsert(terminal.card as Card, _terminal);
-      await this.terminalService.update({ active_card: _card });
+      await this.terminalService.update({ id: _terminal.id, active_card: _card });
     }
     this.sendTerminalList();
   }
   
 
   async sendTerminalList(){
-    const terminals = this.terminalService.getAll()
+    const terminals = await this.terminalService.getAll()
+    console.log(terminals)
     this.server.emit('terminalListChanged', terminals);
   }
 }

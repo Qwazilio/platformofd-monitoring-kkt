@@ -1,4 +1,4 @@
-@import '@/variables';
+@use '@/variables' as *;
 
 .wrapper{
     background-color: $background-color;
@@ -8,6 +8,7 @@
     border: solid $border-color;
     overflow: hidden;
     color: white;
+    z-index: 9999999;
 
     .top{
         width: 100%;

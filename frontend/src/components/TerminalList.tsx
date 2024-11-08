@@ -7,6 +7,7 @@ import TerminalSerach from "./TerminalSearch"
 import TerminalImport from "./TerminalImport"
 import OffcanvasWindow from "@/ui/offcanvasWindow"
 import useSocket from "@/hooks/useSocket"
+import { format } from "date-fns/fp"
 
 interface TerminalListProps{
 
@@ -14,7 +15,7 @@ interface TerminalListProps{
 export default function TerminalList({} : TerminalListProps) {
     const socket = useSocket()
     const [terminals, setTerminals] = useState<TerminalEntity[]>([])
-    const [showImprot, setShowImport] = useState<boolean>(false);
+    const [showImport, setShowImport] = useState<boolean>(false);
 
     const getTerminalList = async () => {
         try{
@@ -36,33 +37,51 @@ export default function TerminalList({} : TerminalListProps) {
         if(!socket) return;
         
         socket.on('terminalListChanged', (terminals) => {
-            setTerminals(terminals);
+            console.log(terminals)
+            setTerminals(terminals)                
         })
+
+        return () => {
+            socket.off('terminalListChanged')
+        }
     }, [socket])
 
     const changeShowImport = () => {
-        if(showImprot) setShowImport(false)
+        if(showImport) setShowImport(false)
         else setShowImport(true)
     }
 
     return(
         <div>
-            {showImprot && <OffcanvasWindow title={'Импорт терминалов'} close={setShowImport}>
+            {showImport && <OffcanvasWindow title={'Импорт терминалов'} close={setShowImport}>
                 <TerminalImport />
             </OffcanvasWindow>}
             <div className={classes.tools}>
                 <TerminalSerach />
-                <button onClick={() => changeShowImport()}>{!showImprot ? "Загрузить" : "Закрыть"}</button>
+                <button onClick={() => changeShowImport()}>{!showImport ? "Загрузить" : "Закрыть"}</button>
             </div>
             
             <div className={classes.wrapper}>
-                {terminals.map((terminal) => (
+                <div className={classes.headerTerminal}>
+                    <label>Название</label>
+                    <label>Адрес</label>
+                    <label>Номер ККТ</label>
+                    <label>Срок подписки</label>
+                    <label>Срок ФН</label>
+                </div>
+                { terminals && (terminals.map((terminal) => (
                     <div className={classes.terminal} key={terminal.uid_terminal}>
-                        <div>{terminal.name_terminal}</div>
-                        <div>{terminal.uid_terminal}</div>
-
+                        <div className={classes.info}>{terminal.name_terminal}</div>
+                        <div className={classes.info}>{terminal.address}</div>
+                        <div className={classes.info}>{terminal.uid_terminal}</div>
+                        <div className={classes.info}>{ terminal.end_date_sub ? (
+                            new Date(terminal.end_date_sub).toLocaleDateString()
+                        ): ('Нет подписки')}</div>
+                        <div className={classes.info}>{terminal.active_card ? (
+                            new Date(terminal.active_card.end_date_card).toLocaleDateString()
+                        ) :  ('Нет ФН')}</div>                        
                     </div>
-                ))}
+                )))}
             </div>
         </div>
     )

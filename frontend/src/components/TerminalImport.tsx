@@ -35,7 +35,7 @@ export default function TerminalImport({}: TerminalImportProps) {
         reg_number: row["РНМ"] as number,
         comment: row["Дополнительный идентификатор"] as string,
         address: row["Адрес кассы"] as string,
-        date_end_sub: convertExcelDateToJSDate(row["Дата окончания подписки"]) as Date,
+        end_date_sub: convertExcelDateToJSDate(row["Дата окончания подписки"]) as Date,
         card: {
           end_date_card: convertExcelDateToJSDate(
             row["Прогнозируемая дата окончания ФН"] as Date
@@ -61,7 +61,6 @@ export default function TerminalImport({}: TerminalImportProps) {
     const socketData = {
       terminals: terminals
     }
-    console.log(socketData)
     socket.emit('import', socketData)
   }
 

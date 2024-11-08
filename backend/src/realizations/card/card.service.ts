@@ -11,6 +11,14 @@ export class CardService {
         private cardRepository: Repository<Card>
     ){}
 
+    async getAll(): Promise<Card[]>{
+        const cards = await this.cardRepository.find({
+            relations: ['terminal']
+        });
+        if(!cards) throw new NotFoundException('Cards not found!')
+        return cards;
+    }
+
     async getOne(card_id: number): Promise<Card>{
         const card = await this.cardRepository.findOne({where: {id: card_id}});
         if(!card) throw new NotFoundException('Card not found!')

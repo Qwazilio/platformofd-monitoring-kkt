@@ -21,4 +21,11 @@ export class TerminalController {
     ) : Promise<Terminal> {
         return await this.terminalService.add(terminal);
     }
+
+    @Get()
+    async getTerminal(
+        @Body() {terminal_id} : {terminal_id: number}
+    ) : Promise<Terminal>{
+        return await this.terminalService.getOne({terminal_id : terminal_id})
+    }
 }

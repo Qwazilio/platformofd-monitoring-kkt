@@ -11,7 +11,9 @@ export class TerminalService {
     ){}
 
     async getAll() : Promise<Terminal[]>{
-        const terminals = await this.terminalRepository.find();
+        const terminals = await this.terminalRepository.find({
+            relations: ['active_card', 'cards']
+        });
         if(!terminals) throw new NotFoundException('Terminals not found!')
         return terminals;
     }
@@ -23,7 +25,10 @@ export class TerminalService {
     }
 
     async getOneByUid({uid_terminal} : {uid_terminal: number}) : Promise<Terminal>{
-        const terminal = await this.terminalRepository.findOne({where: {uid_terminal: uid_terminal}})
+        const terminal = await this.terminalRepository.findOne({
+            where: {uid_terminal: uid_terminal},
+            relations: ['card']
+        })
         if(!terminal) throw new NotFoundException('Terminal not found!')
         return terminal;
     }
@@ -44,7 +49,7 @@ export class TerminalService {
         return await this.terminalRepository.save(terminal);
     }
 
-    async upsert(terminal_updated: Terminal) : Promise<Terminal>{
+    async upsert(terminal_updated: Partial<Terminal>) : Promise<Terminal>{
         const terminal = await this.terminalRepository.findOneBy({uid_terminal: terminal_updated.uid_terminal});
         if(!terminal) {
             return await this.add(terminal_updated)
