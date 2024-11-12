@@ -1,6 +1,6 @@
 interface TerminalEntity{
     id?: number
-    uid_terminal: number
+    uid_terminal: string
     organization?: string
     name_terminal: string
     name_store?: string
@@ -10,11 +10,14 @@ interface TerminalEntity{
     cards?: CardEntity[]
     end_date_sub?: Date
     deleted?: boolean
+    stock?: boolean
+    broken?: boolean
+    notification?: string
 }
 
 interface CardEntity{
     id?: number
-    uid_card: number
+    uid_card: string
     end_date_card: Date
     terminal?: TerminalEntity
 }

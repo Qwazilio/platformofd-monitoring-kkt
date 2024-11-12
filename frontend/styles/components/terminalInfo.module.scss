@@ -1,0 +1,26 @@
+@use '@/variables' as *;
+
+.wrapper{
+    padding: 0.25em;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+
+    label{
+        margin-top: 0.5em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+
+    input, button{
+        color: $text-color-window;
+        margin: 0.25em;
+        padding: 0.5em;
+        border-radius: $border-radius-em;
+    }
+
+    button{
+        background-color: $background-color-special-ui !important;
+        color: $text-color !important;
+    }
+}

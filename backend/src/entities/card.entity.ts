@@ -7,7 +7,7 @@ export class Card{
     id: number
 
     @Column({unique: true, nullable: false})
-    uid_card: number
+    uid_card: string
 
     @Column({nullable: false})
     end_date_card: Date

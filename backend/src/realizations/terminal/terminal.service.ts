@@ -19,12 +19,15 @@ export class TerminalService {
     }
 
     async getOne({terminal_id} : {terminal_id: number}) : Promise<Terminal>{
-        const terminal = await this.terminalRepository.findOne({where: {id: terminal_id}})
+        const terminal = await this.terminalRepository.findOne({
+            where: {id: terminal_id},
+            relations: ['active_card']
+        })
         if(!terminal) throw new NotFoundException('Terminal not found!')
         return terminal;
     }
 
-    async getOneByUid({uid_terminal} : {uid_terminal: number}) : Promise<Terminal>{
+    async getOneByUid({uid_terminal} : {uid_terminal: string}) : Promise<Terminal>{
         const terminal = await this.terminalRepository.findOne({
             where: {uid_terminal: uid_terminal},
             relations: ['card']

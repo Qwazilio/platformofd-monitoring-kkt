@@ -27,7 +27,7 @@ export class TerminalGateway implements OnGatewayConnection, OnGatewayDisconnect
   }
 
   @SubscribeMessage('import')
-  async handleimport(
+  async handleImport(
     @ConnectedSocket() client: Socket,
     @MessageBody() { terminals }: { terminals: any }
   ) {
@@ -39,10 +39,18 @@ export class TerminalGateway implements OnGatewayConnection, OnGatewayDisconnect
     this.sendTerminalList();
   }
   
+  @SubscribeMessage('updateTerminal')
+  async handleUpdate(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() terminal: Terminal
+  ) {
+    const updated_terminal = await this.terminalService.update(terminal)
+    console.log(updated_terminal)
+    this.sendTerminalList()
+  }
 
   async sendTerminalList(){
     const terminals = await this.terminalService.getAll()
-    console.log(terminals)
     this.server.emit('terminalListChanged', terminals);
   }
 }

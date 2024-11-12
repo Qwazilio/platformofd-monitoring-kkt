@@ -9,6 +9,7 @@
         background-color: $background-color-special-ui;
         padding: 0.5em;
         border-radius: 0.5em;
+        margin: 0.25em;
     }
 }
 
@@ -21,6 +22,10 @@
         top: -5px;
         background-color: $background-color-special-ui !important;
 
+        label{
+            color: $text-color;
+        }
+
     }
     .terminal, .headerTerminal{
         background-color: $background-color-window;
@@ -30,6 +35,7 @@
         border-radius: 0.25em;
         display: grid;
         grid-template-columns: repeat(5,1fr);
+        cursor: pointer;
         
         .info, label{
             padding: 0.5em;

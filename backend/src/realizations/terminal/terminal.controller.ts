@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { TerminalService } from './terminal.service';
 import { CardService } from '../card/card.service';
 import { Terminal } from 'src/entities/terminal.entity';
@@ -24,8 +24,8 @@ export class TerminalController {
 
     @Get()
     async getTerminal(
-        @Body() {terminal_id} : {terminal_id: number}
-    ) : Promise<Terminal>{
+        @Query('id') terminal_id: number
+    ) : Promise<Terminal> {
         return await this.terminalService.getOne({terminal_id : terminal_id})
     }
 }

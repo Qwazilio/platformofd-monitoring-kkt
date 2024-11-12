@@ -5,16 +5,23 @@ import { SetStateAction, useEffect, useState } from "react";
 
 interface TerminalSearchProps{
   list: TerminalEntity[];
-  setList: React.SetStateAction<TerminalEntity[]>
+  setFilterList: React.Dispatch<SetStateAction<TerminalEntity[]>>
 }
-export default function TerminalSerach({list, setList} : TerminalSearchProps) {
+export default function TerminalSerach({list, setFilterList} : TerminalSearchProps) {
   const [search, setSearch] = useState<string>('')
 
   useEffect(() => {
+    if(!list) return;
     const result = list.filter((node) => (
-      node.name_terminal.toLowerCase().toString().includes(search.toLowerCase())
+      node.address?.toString().toLowerCase().includes(search.toLowerCase()) ||
+      node.comment?.toString().toLowerCase().includes(search.toLowerCase()) ||
+      node.name_store?.toString().toLowerCase().includes(search.toLowerCase()) ||
+      node.name_terminal?.toString().toLowerCase().includes(search.toLowerCase()) ||
+      node.organization?.toString().toLowerCase().includes(search.toLowerCase()) ||
+      node.uid_terminal?.toString().toLowerCase().includes(search.toLowerCase()) ||
+      node.active_card?.uid_card?.toString().toLowerCase().includes(search.toLowerCase())
     ));
-    setList(result as TerminalEntity[])
+    setFilterList(result as TerminalEntity[])
   }, [search])
 
 

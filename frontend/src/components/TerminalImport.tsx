@@ -13,7 +13,6 @@ interface TerminalImportProps {}
 export default function TerminalImport({}: TerminalImportProps) {
   const socket = useSocket()
   const [terminals, setTerminals] = useState<TerminalEntity[]>([]);
-  const [cards, setCards] = useState<CardEntity[]>([])
   const [isDisabled, setisDisabled] = useState<boolean>(true);
 
   const handleFileUpload = (event: any) => {
@@ -27,7 +26,6 @@ export default function TerminalImport({}: TerminalImportProps) {
       const worksheet = workbook.Sheets[sheetName];
       const json = XLSX.utils.sheet_to_json(worksheet);
 
-      // Фильтрация нужных столбцов
       const terminalData = json.map((row) => ({
         name_store: row["Наименование магазина"] as string,
         name_terminal: row["Наименование кассы"] as string,

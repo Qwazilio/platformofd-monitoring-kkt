@@ -7,7 +7,7 @@ export class Terminal{
     id: number
 
     @Column({unique: true, nullable: false})
-    uid_terminal: number
+    uid_terminal: string
 
     @Column({nullable: true})
     reg_number: number
@@ -17,6 +17,9 @@ export class Terminal{
 
     @Column({nullable: true})
     name_store: string
+
+    @Column({nullable: true})
+    organization: string
 
     @Column({nullable: true})
     comment: string
@@ -42,4 +45,7 @@ export class Terminal{
 
     @Column({nullable: false, default: false})
     broken: boolean
+
+    @Column({nullable: true})
+    notification: string
 }
