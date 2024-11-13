@@ -1,5 +1,5 @@
 import classes from "@/ui/offcanvasWindow.module.scss"
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
+import React, { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react"
 
 interface OffcanvasWindowProps{ 
     title: string
@@ -42,6 +42,17 @@ export default function OffcanvasWindow ({title, close, children} : OffcanvasWin
       setFixPosition({x: position.x - event.clientX, y: position.y - event.clientY})
       setDragging(true)
     }
+
+    const closeWindow = (event: KeyboardEvent) => {
+      if(event.key === 'Escape') close(false)      
+    }
+
+    useEffect(() => {
+      document.addEventListener('keydown', closeWindow);
+      return () => {
+        document.removeEventListener('keydown', closeWindow);
+      };
+    }, [])
 
     return(
         <div className={classes.wrapper}
