@@ -49,7 +49,7 @@ export default function TerminalInfo({terminal} : TerminalInfoProps) {
                 <label>Магазин</label>
                 <input onChange={onChangeInfo} name="name_store" value={terminalInfo?.name_store || ''}/>
                 <label>ККМ</label>
-                <input onChange={onChangeInfo} name="uid_terminal" value={terminalInfo?.uid_terminal}/>
+                <input name="uid_terminal" readOnly value={terminalInfo?.uid_terminal}/>
                 <label>Организация</label>
                 <input onChange={onChangeInfo} name="organization" value={terminalInfo?.organization || ''}/>
                 <label>Дополнительный идентификатор</label>
@@ -63,7 +63,7 @@ export default function TerminalInfo({terminal} : TerminalInfoProps) {
                     ): ('')
                 }/>
                 <label>Номер ФН</label> 
-                <input onChange={onChangeInfo} name="active_card.uid_card" value={terminalInfo?.active_card?.uid_card || ''}/> 
+                <input readOnly name="active_card.uid_card" value={terminalInfo?.active_card?.uid_card || ''}/> 
                 <label>Дата ФН</label>
                 <input onChange={onChangeInfo} name="active_card.end_date_card" value={
                     terminalInfo.active_card?.end_date_card ? (

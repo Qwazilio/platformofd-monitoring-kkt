@@ -11,6 +11,26 @@
         border-radius: 0.5em;
         margin: 0.25em;
     }
+
+    .sorts{
+        display: flex;
+        align-items: center;
+        
+
+        div{
+            cursor: pointer;
+            user-select: none;
+            background-color: $background-color-window;
+            border-radius: $border-radius-em;
+            color: $text-color-window;
+            margin: 0.25em;
+            padding: 0.5em;
+
+            label{
+                margin: 0.5em;
+            }
+        }
+    }
 }
 
 .wrapper{

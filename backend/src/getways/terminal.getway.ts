@@ -41,11 +41,9 @@ export class TerminalGateway implements OnGatewayConnection, OnGatewayDisconnect
   
   @SubscribeMessage('updateTerminal')
   async handleUpdate(
-    @ConnectedSocket() client: Socket,
     @MessageBody() terminal: Terminal
   ) {
     const updated_terminal = await this.terminalService.update(terminal)
-    console.log(updated_terminal)
     this.sendTerminalList()
   }
 

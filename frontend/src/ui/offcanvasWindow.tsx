@@ -7,7 +7,7 @@ interface OffcanvasWindowProps{
     children?: React.ReactNode
 }
 export default function OffcanvasWindow ({title, close, children} : OffcanvasWindowProps) {
-    const [position, setPosition] = useState({ x: window.innerWidth/ 2, y: window.innerHeight/ 2});
+    const [position, setPosition] = useState({ x: window.innerWidth/ 2 - 250, y:  50});
     const [fixPosition, setFixPosition] = useState({x: 0, y: 0});
     const [dragging, setDragging] = useState(false);
 

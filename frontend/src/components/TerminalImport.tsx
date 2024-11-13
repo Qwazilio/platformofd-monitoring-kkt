@@ -1,6 +1,6 @@
 "use client";
 import useSocket from "@/hooks/useSocket";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import classes from "@/components/terminalImport.module.scss"
 
@@ -9,8 +9,10 @@ const convertExcelDateToJSDate = (excelDate) => {
   return date;
 };
 
-interface TerminalImportProps {}
-export default function TerminalImport({}: TerminalImportProps) {
+interface TerminalImportProps {
+  setState: Dispatch<SetStateAction<boolean>>
+}
+export default function TerminalImport({setState}: TerminalImportProps) {
   const socket = useSocket()
   const [terminals, setTerminals] = useState<TerminalEntity[]>([]);
   const [isDisabled, setisDisabled] = useState<boolean>(true);
@@ -29,8 +31,8 @@ export default function TerminalImport({}: TerminalImportProps) {
       const terminalData = json.map((row) => ({
         name_store: row["Наименование магазина"] as string,
         name_terminal: row["Наименование кассы"] as string,
-        uid_terminal: row["ЗН"] as number,
-        reg_number: row["РНМ"] as number,
+        uid_terminal: row["ЗН"] as string,
+        reg_number: row["РНМ"] as string,
         comment: row["Дополнительный идентификатор"] as string,
         address: row["Адрес кассы"] as string,
         end_date_sub: convertExcelDateToJSDate(row["Дата окончания подписки"]) as Date,
@@ -38,8 +40,8 @@ export default function TerminalImport({}: TerminalImportProps) {
           end_date_card: convertExcelDateToJSDate(
             row["Прогнозируемая дата окончания ФН"] as Date
           ),
-          uid_card: row["ФН"] as number,
-          uid_terminal: row["ЗН"] as number,
+          uid_card: row["ФН"] as string,
+          uid_terminal: row["ЗН"] as string,
         }
       }));
 
@@ -54,14 +56,17 @@ export default function TerminalImport({}: TerminalImportProps) {
       setisDisabled(false)
   }, [terminals])
 
+  const closeWindow = () => {
+    setState(false);
+  }
+
   const sendOnServer = () => {
     if(!socket) return;
     const socketData = {
       terminals: terminals
     }
-    socket.emit('import', socketData)
+    socket.emit('import', socketData)    
   }
-
 
   return (
     <div className={classes.wrapper}>
@@ -70,7 +75,7 @@ export default function TerminalImport({}: TerminalImportProps) {
         type="file"
         accept=".xlsx, .xls"
       />      
-      <button onClick={() => sendOnServer()} disabled={isDisabled}>Загрузить на сервер</button>
+      <button onClick={() => {sendOnServer(); closeWindow()}} disabled={isDisabled}>Загрузить на сервер</button>
     </div>
   );
 }

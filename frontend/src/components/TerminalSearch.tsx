@@ -1,16 +1,19 @@
 "use client";
 
 import classes from "@/components/terminalSearch.module.scss";
-import { SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 
 interface TerminalSearchProps{
   list: TerminalEntity[];
   setFilterList: React.Dispatch<SetStateAction<TerminalEntity[]>>
+  setState: React.Dispatch<SetStateAction<boolean>>
 }
-export default function TerminalSerach({list, setFilterList} : TerminalSearchProps) {
+export default function TerminalSerach({list, setFilterList, setState} : TerminalSearchProps) {
   const [search, setSearch] = useState<string>('')
 
   useEffect(() => {
+    setState(search.length > 0)
+
     if(!list) return;
     const result = list.filter((node) => (
       node.address?.toString().toLowerCase().includes(search.toLowerCase()) ||
