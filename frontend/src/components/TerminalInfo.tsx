@@ -40,6 +40,29 @@ export default function TerminalInfo({terminal} : TerminalInfoProps) {
         }));
       };
 
+      const onChangeDate = (event) => {
+        const { name, value } = event.target;
+        setTerminalInfo((prev) => ({
+          ...prev,
+          [name]: new Date(value).toISOString(),
+        }));
+      };
+
+      const onChangeDateFN = (event) => {
+        const { name, value } = event.target;
+        setTerminalInfo((prev) => {
+          const newActiveCard = {
+            ...prev.active_card,
+            [name.split('.').pop()]: new Date(value).toISOString(),
+          };
+          return {
+            ...prev,
+            active_card: newActiveCard,
+          };
+        });
+      };
+
+
     return(
         <> 
         {terminalInfo ? 
@@ -57,24 +80,24 @@ export default function TerminalInfo({terminal} : TerminalInfoProps) {
                 <label>Адрес</label>
                 <input onChange={onChangeInfo} name="address" value={terminalInfo?.address || ''}/>
                 <label>Подписка</label>
-                <input onChange={onChangeInfo} name="end_date_sub" value={
-                    terminal.end_date_sub ? (
-                        new Date(terminal.end_date_sub).toLocaleDateString()
+                <input type="date" onChange={onChangeDate} name="end_date_sub" value={
+                    terminalInfo.end_date_sub ? (
+                        new Date(terminalInfo.end_date_sub).toISOString().split('T')[0]
                     ): ('')
                 }/>
                 <label>Номер ФН</label> 
                 <input readOnly name="active_card.uid_card" value={terminalInfo?.active_card?.uid_card || ''}/> 
                 <label>Дата ФН</label>
-                <input onChange={onChangeInfo} name="active_card.end_date_card" value={
+                <input onChange={onChangeDateFN} type="date" name="active_card.end_date_card" value={
                     terminalInfo.active_card?.end_date_card ? (
-                        new Date(terminalInfo.active_card.end_date_card).toLocaleDateString()
+                        new Date(terminalInfo.active_card.end_date_card).toISOString().split('T')[0]
                     ) : ('')                    
                 }/> 
                 <label>Комментарий</label>      
                 <input onChange={onChangeInfo} name="notification" value={terminalInfo?.notification || ''}/>
                 <div>
                     <label>На складе</label> <input onChange={onChangeCheckbox} name="stock" type='checkbox' checked={terminalInfo?.stock}/>
-                </div>    
+                </div>
                 <div>
                     <label>Сломан</label> <input onChange={onChangeCheckbox} name="broken" type='checkbox' checked={terminalInfo?.broken}/>
                 </div>            
@@ -82,6 +105,7 @@ export default function TerminalInfo({terminal} : TerminalInfoProps) {
                     <label>Удален</label> <input onChange={onChangeCheckbox} name="deleted" type='checkbox' checked={terminalInfo?.deleted}/>
                 </div>
                 <button onClick={() => updateTerminal()}>Сохранить</button>
+                <button onClick={() => {}}>Сменить ФН (не работает)</button>
             </div>
             :
             <div>Загрузка...</div>        

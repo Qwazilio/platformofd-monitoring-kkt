@@ -15,7 +15,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Next App",
+  title: "Мониторинг терминалов",
   description: "Monitoring terminals",
 };
 
