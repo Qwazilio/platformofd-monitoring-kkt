@@ -22,10 +22,11 @@ export default function TerminalSerach({list, setFilterList, setState} : Termina
       node.name_terminal?.toString().toLowerCase().includes(search.toLowerCase()) ||
       node.organization?.toString().toLowerCase().includes(search.toLowerCase()) ||
       node.uid_terminal?.toString().toLowerCase().includes(search.toLowerCase()) ||
-      node.active_card?.uid_card?.toString().toLowerCase().includes(search.toLowerCase())
+      node.active_card?.uid_card?.toString().toLowerCase().includes(search.toLowerCase()) || 
+      node.notification?.toString().toLowerCase().includes(search.toLowerCase())
     ));
     setFilterList(result as TerminalEntity[])
-  }, [search])
+  }, [search, list])
 
 
   return (

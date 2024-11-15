@@ -88,7 +88,7 @@ export default function TerminalInfo({terminal} : TerminalInfoProps) {
                 <label>Номер ФН</label> 
                 <input readOnly name="active_card.uid_card" value={terminalInfo?.active_card?.uid_card || ''}/> 
                 <label>Дата ФН</label>
-                <input onChange={onChangeDateFN} type="date" name="active_card.end_date_card" value={
+                <input readOnly type="date" name="active_card.end_date_card" value={
                     terminalInfo.active_card?.end_date_card ? (
                         new Date(terminalInfo.active_card.end_date_card).toISOString().split('T')[0]
                     ) : ('')                    
