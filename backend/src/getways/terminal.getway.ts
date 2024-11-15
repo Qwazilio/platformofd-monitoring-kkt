@@ -49,6 +49,14 @@ export class TerminalGateway implements OnGatewayConnection, OnGatewayDisconnect
     this.sendTerminalList()
   }
 
+  @SubscribeMessage('createFN')
+  async handleCreateFN(
+    @MessageBody() {card, uid_terminal}:{card: Card, uid_terminal: string} 
+  ){
+    const terminal = await this.terminalService.getOneByUid({uid_terminal})
+    const new_card = await this.cardService.add(card, terminal)
+  }
+
   async sendTerminalList(){
     const terminals = await this.terminalService.getAll()
     this.server.emit('terminalListChanged', terminals);
