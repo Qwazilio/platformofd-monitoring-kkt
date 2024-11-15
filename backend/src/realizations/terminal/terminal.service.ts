@@ -1,5 +1,6 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Card } from 'src/entities/card.entity';
 import { Terminal } from 'src/entities/terminal.entity';
 import { DeleteResult, Repository } from 'typeorm';
 
@@ -30,7 +31,7 @@ export class TerminalService {
     async getOneByUid({uid_terminal} : {uid_terminal: string}) : Promise<Terminal>{
         const terminal = await this.terminalRepository.findOne({
             where: {uid_terminal: uid_terminal},
-            relations: ['card']
+            relations: ['active_card']
         })
         if(!terminal) throw new NotFoundException('Terminal not found!')
         return terminal;
@@ -52,11 +53,19 @@ export class TerminalService {
         return await this.terminalRepository.save(terminal);
     }
 
-    async upsert(terminal_updated: Partial<Terminal>) : Promise<Terminal>{
-        const terminal = await this.terminalRepository.findOneBy({uid_terminal: terminal_updated.uid_terminal});
+    async upsert(terminal_updated: Partial<Terminal>, card_updated: Partial<Card>) : Promise<Terminal>{
+        const terminal = await this.terminalRepository.findOne({
+            where: {uid_terminal: terminal_updated.uid_terminal},
+            relations: ['active_card']
+        });
         if(!terminal) {
             return await this.add(terminal_updated)
         };
+        if(terminal.active_card)
+            if(!card_updated.end_date_card)
+                return terminal
+            else if(terminal.active_card.end_date_card.getTime() > new Date(card_updated.end_date_card).getTime())
+                return terminal;
         this.terminalRepository.merge(terminal, terminal_updated)
         return await this.terminalRepository.save(terminal);
     }
