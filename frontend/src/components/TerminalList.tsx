@@ -120,21 +120,7 @@ export default function TerminalList({ }: TerminalListProps) {
         getTerminalList();
     }, []);
 
-    const filteredTerminals = useMemo(() => {
-        return terminals.filter((terminal) => {
-            const deletedMatch = 
-                (showDeleted && terminal.deleted) || 
-                (!showDeleted && !terminal.deleted);
-            const stockMatch = 
-                (showStock && terminal.stock) || 
-                (!showStock && !terminal.stock);
-            return deletedMatch && stockMatch;
-        });
-    }, [terminals, showDeleted, showStock])
 
-    useEffect(() => {
-        setFilterTerminals(filteredTerminals);
-    }, [filteredTerminals]);
 
     useEffect(() => {
         if (!isSearch) viewList(terminals);
