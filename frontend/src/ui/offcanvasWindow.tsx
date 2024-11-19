@@ -1,3 +1,4 @@
+import { CancelCircleIcon } from "@/media/defaultIcons"
 import classes from "@/ui/offcanvasWindow.module.scss"
 import React, { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react"
 
@@ -63,7 +64,7 @@ export default function OffcanvasWindow ({title, close, children} : OffcanvasWin
         >
             <div className={classes.top}  onMouseDown={(event) => handleMouseDown(event)}>
               <div className={classes.title}>{title}</div>
-              <div className={classes.cancel} onClick={() => close(false)}>Х</div>
+              <div className={classes.cancel} onClick={() => close(false)}><CancelCircleIcon color={"white"}/></div>
             </div>
             <div className={classes.body}>
                 {children}

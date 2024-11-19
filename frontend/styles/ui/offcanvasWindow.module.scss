@@ -16,7 +16,9 @@
         background-color: $background-color-special-ui;
         padding: 0.5em;
         display: flex;
+        font-size: 1.25em;
         justify-content: space-between;
+
 
         .cancel{
             cursor: pointer;
