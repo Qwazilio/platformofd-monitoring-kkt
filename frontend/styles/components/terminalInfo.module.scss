@@ -1,4 +1,4 @@
-@use '@/variables' as *;
+@use '@/variables' as variables;
 
 .wrapper{
     padding: 0.25em;
@@ -13,14 +13,14 @@
     }
 
     input, button{
-        color: $text-color-window;
+        color: variables.$text-color-window;
         margin: 0.25em;
         padding: 0.5em;
-        border-radius: $border-radius-em;
+        border-radius: variables.$border-radius-em;
     }
 
     button{
-        background-color: $background-color-special-ui !important;
-        color: $text-color !important;
+        background-color: variables.$background-color-special-ui !important;
+        color: variables.$text-color !important;
     }
 }

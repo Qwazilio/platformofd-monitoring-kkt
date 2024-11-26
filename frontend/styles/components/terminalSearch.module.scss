@@ -1,12 +1,12 @@
-@use '@/variables' as *;
+@use '@/variables' as variables;
 
 .search{
 
     input{
         padding: 0.5em;
-        border: 1px solid $border-color;
-        border-radius: $border-radius-em;
-        color: $text-color-window;
+        border: 1px solid variables.$border-color;
+        border-radius: variables.$border-radius-em;
+        color: variables.$text-color-window;
         width: 500px;
     }
 }

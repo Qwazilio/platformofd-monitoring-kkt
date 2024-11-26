@@ -1,11 +1,11 @@
-@use '@/variables' as *;
+@use '@/variables' as variables;
 
 .wrapper{
-    background-color: $background-color;
+    background-color: variables.$background-color;
     position: absolute;
     user-select: none;
-    border-radius: $border-radius-em;    
-    border: solid $border-color;
+    border-radius: variables.$border-radius-em;    
+    border: solid variables.$border-color;
     overflow: auto;
     color: white;
     max-height: 1000px;
@@ -13,7 +13,7 @@
 
     .top{
         width: 100%;
-        background-color: $background-color-special-ui;
+        background-color: variables.$background-color-special-ui;
         padding: 0.5em;
         display: flex;
         font-size: 1.25em;
