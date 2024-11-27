@@ -19,23 +19,23 @@ export class TerminalGateway implements OnGatewayConnection, OnGatewayDisconnect
   ){}
 
   handleConnection(client: Socket) {
-    console.log(`Client connected: ${client.id}`);
+    //console.log(`Client connected: ${client.id}`);
   }
 
   handleDisconnect(client: Socket) {
-    console.log(`Client disconnected: ${client.id}`);
+    //console.log(`Client disconnected: ${client.id}`);
   }
 
   @SubscribeMessage('import')
   async handleImport(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { terminals }: { terminals: any }
+    @MessageBody() terminals : [Terminal, Card][]
   ) {
-    for (const terminal of terminals) {
-      const _terminal = await this.terminalService.upsert(terminal as Terminal, terminal.card as Card);
-      const _card = await this.cardService.upsert(terminal.card as Card, _terminal);
+    for (const [terminal, card] of terminals) {
+      const _terminal = await this.terminalService.upsert(terminal);
+      const _card = await this.cardService.upsert(card, _terminal);
       if(_card)
-        if(_terminal.active_card.end_date_card.getTime() < new Date(_card.end_date_card).getTime())
+        if(!_terminal.active_card || _terminal.active_card.end_date_card.getTime() < new Date(_card.end_date_card).getTime() )
           await this.terminalService.update({ id: _terminal.id, active_card: _card });
     }
     this.sendTerminalList();
