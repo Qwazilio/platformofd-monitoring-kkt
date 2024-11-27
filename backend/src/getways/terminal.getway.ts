@@ -32,7 +32,7 @@ export class TerminalGateway implements OnGatewayConnection, OnGatewayDisconnect
     @MessageBody() terminals : [Terminal, Card][]
   ) {
     for (const [terminal, card] of terminals) {
-      const _terminal = await this.terminalService.upsert(terminal);
+      const _terminal = await this.terminalService.upsert(terminal, card);
       const _card = await this.cardService.upsert(card, _terminal);
       if(_card)
         if(!_terminal.active_card || _terminal.active_card.end_date_card.getTime() < new Date(_card.end_date_card).getTime() )

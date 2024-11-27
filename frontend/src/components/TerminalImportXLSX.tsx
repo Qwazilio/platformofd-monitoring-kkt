@@ -28,7 +28,7 @@ export default function TerminalImportXLSX({setTerminals, visible, sendOnServer}
           const json = XLSX.utils.sheet_to_json(worksheet);
     
           const terminalData = json.map((row) => ([{
-            name_store: row["Наименование магазина"] as string,
+            organization: row["Наименование магазина"] as string,
             name_terminal: row["Наименование кассы"] as string,
             uid_terminal: row["ЗН"] as string,
             reg_number: row["РНМ"] as string,
