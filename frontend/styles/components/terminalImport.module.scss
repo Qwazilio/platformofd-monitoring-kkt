@@ -14,4 +14,11 @@
         background-color: variables.$background-color-special-ui;
 
     }
+
+    button:disabled {
+        background-color: darkgray;
+        color: white; /* Цвет текста */
+        cursor: not-allowed; /* Курсор "запрещено" */
+        opacity: 0.6; /* Прозрачность */
+    }
 }

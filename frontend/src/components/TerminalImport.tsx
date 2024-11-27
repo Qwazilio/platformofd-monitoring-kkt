@@ -10,20 +10,30 @@ interface TerminalImportProps {
 }
 export default function TerminalImport({setState}: TerminalImportProps) {
   const socket = useSocket()
-  const [terminals, setTerminals] = useState<TerminalEntity[]>([]);
+  const [terminals, setTerminals] = useState<(TerminalEntity | CardEntity)[][]>([]);
+
+  const [isDisabled, setisDisabled] = useState<boolean>(true);
+    
+  useEffect(() =>{
+      if(terminals.length > 0){
+        console.log(terminals)
+        setisDisabled(false)}
+      else{
+       setisDisabled(true) 
+      }
+    }, [terminals])
 
   const sendOnServer = () => {
     if(!socket) return;
-    const socketData = {
-      terminals: terminals
-    }
-    socket.emit('import', socketData)    
+    setState(false);
+    socket.emit('import', terminals)    
   }
 
   return (
     <div className={classes.wrapper}>
-      <TerminalImportXLSX terminals={terminals} setTerminals={setTerminals} visible={setState} sendOnServer={sendOnServer}/>
-      <TerminalImportAPI terminals={terminals} setTerminals={setTerminals} visible={setState} sendOnServer={sendOnServer}/>
+      <TerminalImportXLSX  setTerminals={setTerminals} visible={setState} sendOnServer={sendOnServer}/>
+      <TerminalImportAPI setTerminals={setTerminals} visible={setState} sendOnServer={sendOnServer}/>
+      <button onClick={() => sendOnServer()} disabled={isDisabled}>Загрузить на сервер</button>
     </div>
   );
 }
