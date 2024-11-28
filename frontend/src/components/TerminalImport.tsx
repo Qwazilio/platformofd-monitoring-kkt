@@ -16,7 +16,6 @@ export default function TerminalImport({setState}: TerminalImportProps) {
     
   useEffect(() =>{
       if(terminals.length > 0){
-        console.log(terminals)
         setisDisabled(false)}
       else{
        setisDisabled(true) 

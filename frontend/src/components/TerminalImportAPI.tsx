@@ -2,7 +2,7 @@
 
 import classes from "@/components/terminalImport.module.scss"
 import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction} from "react";
 
 interface Kkt {
     kktName: string; // Название ККТ
@@ -20,7 +20,7 @@ interface TerminalImportAPIProps{
     visible: Dispatch<SetStateAction<boolean>>
     sendOnServer: () => void
 }
-export default function TerminalImportAPI({setTerminals, visible, sendOnServer} : TerminalImportAPIProps) {
+export default function TerminalImportAPI({setTerminals} : TerminalImportAPIProps) {
 
     const fetchTerminals = async (route : string) => {
         setTerminals([])

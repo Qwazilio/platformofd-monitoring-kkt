@@ -1,6 +1,6 @@
 'use client'
 import classes from "@/components/terminalImport.module.scss"
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import * as XLSX from "xlsx";
 
 interface TerminalImportXLSXProps{
@@ -8,7 +8,7 @@ interface TerminalImportXLSXProps{
     visible: Dispatch<SetStateAction<boolean>>
     sendOnServer: () => void
 }
-export default function TerminalImportXLSX({setTerminals, visible, sendOnServer} : TerminalImportXLSXProps) {
+export default function TerminalImportXLSX({setTerminals} : TerminalImportXLSXProps) {
 
 
     const convertExcelDateToJSDate = (excelDate) => {
@@ -17,6 +17,7 @@ export default function TerminalImportXLSX({setTerminals, visible, sendOnServer}
     };
       
     const handleFileUpload = (event: any) => {
+        setTerminals([])
         const file = event.target.files[0];
         const reader = new FileReader();
     
@@ -53,6 +54,7 @@ export default function TerminalImportXLSX({setTerminals, visible, sendOnServer}
 
     return(
         <div className={classes.wrapper}>
+        <h3 style={{textAlign: "center", fontSize: "1.2em"}}>Импорт из файла</h3>
         <input
           onChange={(event) => handleFileUpload(event)}
           type="file"
