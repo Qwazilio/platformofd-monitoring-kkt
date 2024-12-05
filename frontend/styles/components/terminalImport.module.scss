@@ -1,4 +1,4 @@
-@use '@/variables' as *;
+@use '@/variables' as variables;
 
 .wrapper{
     display: flex;
@@ -11,7 +11,14 @@
     }
 
     button{
-        background-color: $background-color-special-ui;
+        background-color: variables.$background-color-special-ui;
 
+    }
+
+    button:disabled {
+        background-color: darkgray;
+        color: white; /* Цвет текста */
+        cursor: not-allowed; /* Курсор "запрещено" */
+        opacity: 0.6; /* Прозрачность */
     }
 }
