@@ -8,6 +8,7 @@ import TerminalImport from "./TerminalImport";
 import OffcanvasWindow from "@/ui/offcanvasWindow";
 import useSocket from "@/hooks/useSocket";
 import TerminalInfo from "./TerminalInfo";
+import { styleText } from "util";
 
 interface TerminalListProps { }
 export default function TerminalList({ }: TerminalListProps) {
@@ -81,6 +82,7 @@ export default function TerminalList({ }: TerminalListProps) {
                 className={classes.terminal}
                 key={terminal.uid_terminal}
                 onClick={() => viewTerminal(terminal.id)}
+                
             >
                 <div className={classes.info}>{terminal.name_terminal}</div>
                 <div className={classes.info}>{terminal.address}</div>
