@@ -11,6 +11,12 @@ async function bootstrap() {
     credentials: true,
   })
 
+  app.enableCors({
+    origin: 'http://kkt.masterminutka.ru',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  })
+
   await app.listen(process.env.PORT ?? 61708);
 }
 bootstrap();
