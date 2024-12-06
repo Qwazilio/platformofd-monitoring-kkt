@@ -4,6 +4,7 @@ interface TerminalEntity{
     organization?: string
     name_terminal: string
     name_store?: string
+    reg_number?: string
     comment?: string
     address?: string
     active_card?: CardEntity
