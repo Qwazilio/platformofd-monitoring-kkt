@@ -16,13 +16,13 @@ export default function TerminalImportXLSX({setTerminals} : TerminalImportXLSXPr
         return date;
     };
       
-    const handleFileUpload = (event: any) => {
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTerminals([])
         const file = event.target.files[0];
         const reader = new FileReader();
     
-        reader.onload = (event) => {
-          const data = new Uint8Array(event.target.result as any);
+        reader.onload = (event : ProgressEvent<FileReader>) => {
+          const data = new Uint8Array(event.target.result as ArrayBuffer);
           const workbook = XLSX.read(data, { type: "array" });
           const sheetName = workbook.SheetNames[0];
           const worksheet = workbook.Sheets[sheetName];

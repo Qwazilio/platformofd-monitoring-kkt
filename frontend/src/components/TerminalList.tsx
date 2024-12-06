@@ -1,17 +1,15 @@
 "use client";
 
 import axiosDefault from "@/lib/axiosDefault";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import classes from "@/components/terminalList.module.scss";
 import TerminalSerach from "./TerminalSearch";
 import TerminalImport from "./TerminalImport";
 import OffcanvasWindow from "@/ui/offcanvasWindow";
 import useSocket from "@/hooks/useSocket";
 import TerminalInfo from "./TerminalInfo";
-import { styleText } from "util";
 
-interface TerminalListProps { }
-export default function TerminalList({ }: TerminalListProps) {
+export default function TerminalList() {
     const socket = useSocket();
     const [list, setList] = useState<ReactNode>(<></>);
     const [count, setCount] = useState<number>(0);
@@ -23,7 +21,7 @@ export default function TerminalList({ }: TerminalListProps) {
     const [terminalInfo, setTerminalInfo] = useState<TerminalEntity | null>(null);
     const [showDeleted, setShowDeleted] = useState<boolean>(false);
     const [showStock, setShowStock] = useState<boolean>(false);
-    const [showBroken, setShowBroken] = useState<boolean>(false);
+    //const [showBroken, setShowBroken] = useState<boolean>(false);
 
     const getTerminalList = async () => {
         try {
@@ -44,7 +42,7 @@ export default function TerminalList({ }: TerminalListProps) {
     };
 
     const sortByFN = (list: TerminalEntity[]) => {
-        const sortedList = list.toSorted((a: any, b: any) => {
+        const sortedList = list.toSorted((a: TerminalEntity, b: TerminalEntity) => {
             const endDateA = new Date(a.active_card.end_date_card);
             const endDateB = new Date(b.active_card.end_date_card);
             return endDateA.getTime() - endDateB.getTime();
