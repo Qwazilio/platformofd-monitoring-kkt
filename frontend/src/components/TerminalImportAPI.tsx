@@ -1,6 +1,5 @@
 'use client'
 
-import classes from "@/components/terminalImport.module.scss"
 import axios from "axios";
 import { Dispatch, SetStateAction} from "react";
 

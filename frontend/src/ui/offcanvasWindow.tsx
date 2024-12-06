@@ -1,6 +1,6 @@
 import { CancelCircleIcon } from "@/media/defaultIcons"
 import classes from "@/ui/offcanvasWindow.module.scss"
-import React, { Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 
 interface OffcanvasWindowProps{ 
     title: string

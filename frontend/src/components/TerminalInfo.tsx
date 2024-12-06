@@ -13,10 +13,6 @@ export default function TerminalInfo({terminal} : TerminalInfoProps) {
 
     useEffect(() => {
         setTerminalInfo(terminal)
-    }, [])
-
-    useEffect(() => {
-        setTerminalInfo(terminal)
     }, [terminal])
 
     const updateTerminal = () => {
@@ -48,19 +44,19 @@ export default function TerminalInfo({terminal} : TerminalInfoProps) {
         }));
       };
 
-      const onChangeDateFN = (event) => {
-        const { name, value } = event.target;
-        setTerminalInfo((prev) => {
-          const newActiveCard = {
-            ...prev.active_card,
-            [name.split('.').pop()]: new Date(value).toISOString(),
-          };
-          return {
-            ...prev,
-            active_card: newActiveCard,
-          };
-        });
-      };
+      // const onChangeDateFN = (event) => {
+      //   const { name, value } = event.target;
+      //   setTerminalInfo((prev) => {
+      //     const newActiveCard = {
+      //       ...prev.active_card,
+      //       [name.split('.').pop()]: new Date(value).toISOString(),
+      //     };
+      //     return {
+      //       ...prev,
+      //       active_card: newActiveCard,
+      //     };
+      //   });
+      // };
 
 
     return(
