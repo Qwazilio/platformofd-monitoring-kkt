@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction} from "react";
 interface Kkt {
     kktName: string; // Название ККТ
     kktNumber: string; // Уникальный номер ККТ
+    kktRegNumber?: string;
     kktCurrentSubscriptionDateTill: string | Date; // Дата окончания подписки
     kktLastCheckStatusDate: string | Date; // Последняя проверка состояния
     kktFN: string; // Уникальный идентификатор карты (ФН)
@@ -36,6 +37,7 @@ export default function TerminalImportAPI({setTerminals} : TerminalImportAPIProp
                 organization: response.data.kktList.orgName,
                 address: kkt.retailAddress,
                 last_active: kkt.kktLastCheckStatusDate,
+                reg_number: kkt.kktRegNumber,
                 comment: kkt.deviceComment,
             } as TerminalEntity,                 
             {
@@ -46,13 +48,14 @@ export default function TerminalImportAPI({setTerminals} : TerminalImportAPIProp
             
             const sortKktsInStores = branches.flatMap(branch => 
                 branch.kkts.map((kkt: Kkt) => ([{
-                    name_terminal: kkt.kktNumber,
+                    name_terminal: kkt.kktName,
                     uid_terminal: kkt.kktNumber,
                     end_date_sub: kkt.kktCurrentSubscriptionDateTill,
                     organization: response.data.kktList.orgName,
                     address: kkt.retailAddress,
                     last_active: kkt.kktLastCheckStatusDate,
                     comment: kkt.deviceComment,
+                    reg_number: kkt.kktRegNumber,
                     name_store: branch.branchName
                 } as TerminalEntity,
                 {
