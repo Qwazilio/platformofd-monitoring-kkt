@@ -149,6 +149,7 @@ export default function TerminalList() {
 
         socket.on("terminalListChanged", (terminals) => {
             setTerminals(sortByFN(terminals));
+            setShowImport(false);
             setshowTerminalInfo(false);
         });
 
