@@ -9,7 +9,6 @@ interface TerminalImportProps {
   setState: Dispatch<SetStateAction<boolean>>
 }
 export default function TerminalImport({setState}: TerminalImportProps) {
-  const [showImport, setShowImport] = useState<boolean>(false);
   const socket = useSocket()
   const [terminals, setTerminals] = useState<(TerminalEntity | CardEntity)[][]>([]);
 
@@ -32,7 +31,7 @@ export default function TerminalImport({setState}: TerminalImportProps) {
   }
 
   return (
-    <div style={{display: 'none'}} className={classes.wrapper}>
+    <div  className={classes.wrapper}>
       <TerminalImportXLSX  setTerminals={setTerminals} visible={setState} sendOnServer={sendOnServer}/>
       <TerminalImportAPI setTerminals={setTerminals} visible={setState} sendOnServer={sendOnServer}/>
       <button onClick={() => sendOnServer()} disabled={isDisabled}>Загрузить на сервер</button>
