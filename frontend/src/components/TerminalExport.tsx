@@ -1,6 +1,3 @@
-'use client'
-
-import { useState } from 'react';
 import * as XLSX from 'xlsx';
 
 interface TerminalExport{
