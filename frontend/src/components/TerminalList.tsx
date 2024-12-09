@@ -8,6 +8,7 @@ import TerminalImport from "./TerminalImport";
 import OffcanvasWindow from "@/ui/offcanvasWindow";
 import useSocket from "@/hooks/useSocket";
 import TerminalInfo from "./TerminalInfo";
+import TerminalExport from "./TerminalExport";
 
 export default function TerminalList() {
     const socket = useSocket();
@@ -23,6 +24,13 @@ export default function TerminalList() {
     const [showStock, setShowStock] = useState<boolean>(false);
     //const [showBroken, setShowBroken] = useState<boolean>(false);
 
+    const changeShowImport = () => {
+        if(showImport)
+            setShowImport(false)
+        else
+            setShowImport(true)
+    }
+
     const getTerminalList = async () => {
         try {
             const response = await axiosDefault.get("/terminal/list");
@@ -36,11 +44,6 @@ export default function TerminalList() {
         }
     };
 
-    const changeShowImport = () => {
-        if (showImport) setShowImport(false);
-        else setShowImport(true);
-    };
-
     const sortByFN = (list: TerminalEntity[]) => {
         const sortedList = list.toSorted((a: TerminalEntity, b: TerminalEntity) => {
             const endDateA = new Date(a.active_card.end_date_card);
@@ -49,6 +52,7 @@ export default function TerminalList() {
         });
         return sortedList;
     };
+
 
     const sortBySub = (list: TerminalEntity[]) => {
         const sortedList = list.toSorted((a: TerminalEntity, b: TerminalEntity) => {
@@ -72,6 +76,19 @@ export default function TerminalList() {
         const new_list = filter_list.map((terminal) => node(terminal));
         setList(new_list);
         setCount(new_list.length);
+    };
+
+    const listForExport = (terminals : TerminalEntity[]) => {
+        const filter_list = terminals.filter((terminal) => {
+            const deletedMatch =
+                (showDeleted && terminal.deleted) ||
+                (!showDeleted && !terminal.deleted);
+            const stockMatch =
+                (showStock && terminal.stock) || (!showStock && !terminal.stock);
+            return deletedMatch && stockMatch;
+        });
+
+        return filter_list.map((terminal) => terminal);
     };
 
     const node = (terminal: TerminalEntity) => {
@@ -201,6 +218,8 @@ export default function TerminalList() {
                         {!showImport ? "Загрузить" : "Закрыть"}
                     </button>
                 </div>
+                <TerminalExport terminals={filterTerminals? filterTerminals : terminals}  />
+
             </div>
             <span>Показано {count} теминалов</span>
             <div className={classes.wrapper}>
