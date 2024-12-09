@@ -17,6 +17,12 @@ async function bootstrap() {
     credentials: true,
   })
 
+  app.enableCors({
+    origin: 'http://192.168.1.3:61707',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  })
+
   await app.listen(process.env.PORT ?? 61708);
 }
 bootstrap();
