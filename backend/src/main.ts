@@ -6,19 +6,11 @@ async function bootstrap() {
 
   
   app.enableCors({
-    origin: 'http://localhost:61707',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  })
-
-  app.enableCors({
-    origin: 'http://kkt.masterminutka.ru',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  })
-
-  app.enableCors({
-    origin: 'http://192.168.1.3:61707',
+    origin: [
+      'http://localhost:61707',
+      'http://kkt.masterminutka.ru',
+      'http://192.168.1.3:61707'
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   })
