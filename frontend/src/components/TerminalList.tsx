@@ -218,7 +218,7 @@ export default function TerminalList() {
                         {!showImport ? "Загрузить" : "Закрыть"}
                     </button>
                 </div>
-                <TerminalExport terminals={filterTerminals? filterTerminals : terminals}  />
+                <TerminalExport terminals={filterTerminals? listForExport(filterTerminals) : listForExport(terminals)}  />
 
             </div>
             <span>Показано {count} теминалов</span>
