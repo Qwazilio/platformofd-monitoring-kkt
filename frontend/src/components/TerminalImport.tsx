@@ -26,8 +26,8 @@ export default function TerminalImport({setState}: TerminalImportProps) {
 
   const sendOnServer = () => {
     if(!socket) return;
-    setState(false);
     socket.emit('import', terminals)    
+    setState(false);
   }
 
   return (
