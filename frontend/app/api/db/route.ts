@@ -1,9 +1,9 @@
-import { axiosIPG } from "@/lib/axiosOFD";
+import { axiosDB } from "@/lib/axiosOFD";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const apiResponse = await axiosIPG.get('/v1/client/kkts');
+    const apiResponse = await axiosDB.get('/v1/client/kkts');
     return NextResponse.json(apiResponse.data, { status: 200 });
   } catch (error) {
     console.error(error);
