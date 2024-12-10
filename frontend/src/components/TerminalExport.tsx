@@ -15,7 +15,7 @@ export default function TerminalExport ({terminals } : TerminalExport ) {
             "Доп. инф." : terminal.comment,
             "Организация" : terminal.organization,
             "ФН" : terminal.active_card.uid_card,
-            "Дата" : terminal.active_card.end_date_card,
+            "Дата" : new Date(terminal.active_card.end_date_card),
             "Комментарий" : terminal.notification
         }))
         console.log(terminals)
