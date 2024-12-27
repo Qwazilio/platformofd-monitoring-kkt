@@ -48,4 +48,7 @@ export class Terminal{
 
     @Column({nullable: true})
     notification: string
+
+    @Column({nullable: false, default: false})
+    updated: boolean
 }

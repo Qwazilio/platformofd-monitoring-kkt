@@ -11,6 +11,7 @@ interface TerminalEntity{
     cards?: CardEntity[]
     end_date_sub?: Date
     deleted?: boolean
+    updated?: boolean
     stock?: boolean
     broken?: boolean
     notification?: string

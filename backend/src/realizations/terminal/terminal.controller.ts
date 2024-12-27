@@ -15,6 +15,11 @@ export class TerminalController {
         return await this.terminalService.getAll();
     }
 
+    @Get('uvi')
+    async update_value_in() : Promise<Terminal[]> {        
+        return await this.terminalService.uvi();
+    }
+
     @Post('add')
     async addTerminal(
         @Body() terminal : Partial<Terminal>

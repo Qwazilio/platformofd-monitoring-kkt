@@ -74,4 +74,15 @@ export class TerminalService {
         if(result.affected === 0) throw new NotFoundException('Terminal not found')
         return result;
     }
+
+    async uvi() : Promise<Terminal[]>{
+        const terminals = await this.terminalRepository.find({
+            where: {stock: false}
+        });
+        for( const terminal of terminals){
+            terminal.updated = true;
+            await this.terminalRepository.save(terminal)
+        }
+        return terminals;
+    }
 }
