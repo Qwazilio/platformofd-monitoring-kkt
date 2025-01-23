@@ -75,14 +75,5 @@ export class TerminalService {
         return result;
     }
 
-    async uvi() : Promise<Terminal[]>{
-        const terminals = await this.terminalRepository.find({
-            where: {stock: false}
-        });
-        for( const terminal of terminals){
-            terminal.updated = true;
-            await this.terminalRepository.save(terminal)
-        }
-        return terminals;
-    }
+
 }
