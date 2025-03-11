@@ -1,0 +1,25 @@
+services:
+  nestjs:
+    build: ./backend
+    ports:
+      - "61708:61708"
+    networks:
+      - app-network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  nextjs:
+    build: ./frontend
+    ports:
+      - "61707:61707"
+    networks:
+      - app-network
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+
+networks:
+  app-network:
+    driver: bridge
