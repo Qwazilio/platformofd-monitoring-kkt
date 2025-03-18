@@ -1,6 +1,8 @@
 @use '@/variables' as variables;
 
 .search{
+    flex-grow: 1;
+
 
     input{
         padding: 0.5em;
