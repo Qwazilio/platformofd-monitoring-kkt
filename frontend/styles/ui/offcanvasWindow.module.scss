@@ -10,6 +10,8 @@
     color: white;
     max-height: 1000px;
     z-index: 99999999;
+    width: 400px;
+    font-size: small;
 
     @media (max-width: 768px) {
         height: 100vh;
@@ -27,7 +29,8 @@
         display: flex;
         font-size: 1.25em;
         justify-content: space-between;
-
+        position: sticky;
+        top: 0;
 
         .cancel{
             cursor: pointer;
