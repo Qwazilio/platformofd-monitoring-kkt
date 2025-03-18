@@ -4,12 +4,16 @@
     padding: 0.25em;
     display: flex;
     flex-direction: column;
-    width: 500px;
+    flex-grow: 1;
 
     label{
         margin-top: 0.5em;
         padding-left: 0.5em;
         padding-right: 0.5em;
+    }
+
+    input{
+        width: 100%;
     }
 
     input, button{

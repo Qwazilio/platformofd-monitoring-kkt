@@ -16,7 +16,7 @@
     .sorts{
         display: flex;
         align-items: center;
-        
+        flex-wrap: wrap;
 
         div{
             cursor: pointer;
@@ -57,9 +57,22 @@
         display: grid;
         grid-template-columns: repeat(5,1fr);
         cursor: pointer;
+
         
         .info, label{
             padding: 0.5em;
+        }
+
+        @media (max-width: 768px) {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .headerTerminal {
+            display: none;
         }
     }
 }
