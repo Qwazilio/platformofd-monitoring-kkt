@@ -1,12 +1,15 @@
 @use '@/variables' as variables;
 
 .search{
+    flex-grow: 1;
+
 
     input{
         padding: 0.5em;
         border: 1px solid variables.$border-color;
         border-radius: variables.$border-radius-em;
         color: variables.$text-color-window;
-        width: 500px;
+        height: 100%;
+        width: 100%;
     }
 }
