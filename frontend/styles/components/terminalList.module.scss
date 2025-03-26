@@ -72,10 +72,24 @@
         }
     }
 
-    .brokenTerminal {
-        @extend .terminal;
-        background-color: $background-color-warning;
+    .information{
+        background: variables.$background-color-info !important;
     }
+    
+    .warning{
+        background: variables.$background-color-warning !important;
+    }
+    
+    .done{
+        background: variables.$background-color-done !important;
+    }
+
+    .broken {
+        background: variables.$background-color-out !important;
+        color: variables.$text-color !important;
+    }
+
+
 
     @media (max-width: 768px) {
         .headerTerminal {
@@ -83,3 +97,5 @@
         }
     }
 }
+
+

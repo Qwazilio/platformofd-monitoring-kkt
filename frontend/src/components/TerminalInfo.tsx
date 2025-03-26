@@ -93,9 +93,7 @@ export default function TerminalInfo({terminal} : TerminalInfoProps) {
                 <input onChange={onChangeInfo} name="reg_number" readOnly value={terminalInfo?.reg_number || ''}/>
                 <label>Комментарий</label>      
                 <input onChange={onChangeInfo} name="notification" value={terminalInfo?.notification || ''}/>
-                <div>
-                    <label>Обновлен</label> <input onChange={onChangeCheckbox} name="updated" type='checkbox' checked={terminalInfo?.updated}/>
-                </div>
+
                 <div>
                     <label>На складе</label> <input onChange={onChangeCheckbox} name="stock" type='checkbox' checked={terminalInfo?.stock}/>
                 </div>

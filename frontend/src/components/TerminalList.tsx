@@ -1,7 +1,7 @@
 "use client";
 
 import axiosDefault from "@/lib/axiosDefault";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import classes from "@/components/terminalList.module.scss";
 import TerminalSerach from "./TerminalSearch";
 import TerminalImport from "./TerminalImport";
@@ -59,7 +59,7 @@ export default function TerminalList() {
     return sortedList;
   };
 
-  const viewList = (terminals: TerminalEntity[]) => {
+  const viewList = useCallback((terminals: TerminalEntity[]) => {
     const new_list = terminals
       .filter(terminal => 
         (showDeleted === terminal.deleted) && 
@@ -69,20 +69,23 @@ export default function TerminalList() {
   
     setList(new_list);
     setCount(new_list.length);
-  };
+  }, [showDeleted, showStock, setList, setCount]);
 
   const listForExport = (terminals: TerminalEntity[]) =>
     terminals.filter(
       (terminal) =>
         showDeleted === terminal.deleted && showStock === terminal.stock
     );
+    
 
   const node = (terminal: TerminalEntity) => {
     return (
       <div
-        className={`${
-          terminal.broken ? classes.terminal : classes.brokenTerminal
-        }`}
+        className={`
+            ${classes.terminal}
+
+            ${(terminal.broken) ? classes.broken : ""}
+        `}
         key={terminal.uid_terminal}
         onClick={() => viewTerminal(terminal.id)}
       >
@@ -204,6 +207,7 @@ export default function TerminalList() {
             {!showImport ? "Загрузить" : "Закрыть"}
           </button>
         </div>
+
         <TerminalExport
           terminals={
             filterTerminals

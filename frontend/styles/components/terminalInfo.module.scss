@@ -16,12 +16,18 @@
         width: 100%;
     }
 
+    input[type="checkbox"]{
+        width: auto;
+    }
+
     input, button{
         color: variables.$text-color-window;
         margin: 0.25em;
         padding: 0.5em;
         border-radius: variables.$border-radius-em;
     }
+
+
 
     button{
         background-color: variables.$background-color-special-ui !important;
