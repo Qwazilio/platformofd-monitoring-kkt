@@ -94,7 +94,7 @@ export default function TerminalInfo({terminal} : TerminalInfoProps) {
                 <label>Комментарий</label>      
                 <input onChange={onChangeInfo} name="notification" value={terminalInfo?.notification || ''}/>
                 <div>
-                    <label>Обновление</label> <input onChange={onChangeCheckbox} name="stock" type='checkbox' checked={terminalInfo?.updated}/>
+                    <label>Обновление</label> <input onChange={onChangeCheckbox} name="updated" type='checkbox' checked={terminalInfo?.updated}/>
                 </div>
                 <div>
                     <label>На складе</label> <input onChange={onChangeCheckbox} name="stock" type='checkbox' checked={terminalInfo?.stock}/>
@@ -106,7 +106,6 @@ export default function TerminalInfo({terminal} : TerminalInfoProps) {
                     <label>Удален</label> <input onChange={onChangeCheckbox} name="deleted" type='checkbox' checked={terminalInfo?.deleted}/>
                 </div>
                 <button onClick={() => updateTerminal()}>Сохранить</button>
-                <button onClick={() => {}}>Сменить ФН (не работает)</button>
             </div>
             :
             <div>Загрузка...</div>        
