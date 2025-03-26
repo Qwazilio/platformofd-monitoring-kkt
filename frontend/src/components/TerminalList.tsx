@@ -83,8 +83,10 @@ export default function TerminalList() {
       <div
         className={`
             ${classes.terminal}
-
-            ${(terminal.broken) ? classes.broken : ""}
+            ${
+              (terminal.broken) ? classes.broken : 
+                (terminal.updated) ? classes.done : ""
+            }
         `}
         key={terminal.uid_terminal}
         onClick={() => viewTerminal(terminal.id)}

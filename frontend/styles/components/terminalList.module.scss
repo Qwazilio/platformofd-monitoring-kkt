@@ -72,6 +72,10 @@
         }
     }
 
+    .information, .warning, .done, .broken{
+        color: variables.$text-color !important;
+    }
+
     .information{
         background: variables.$background-color-info !important;
     }
@@ -86,7 +90,6 @@
 
     .broken {
         background: variables.$background-color-out !important;
-        color: variables.$text-color !important;
     }
 
 
