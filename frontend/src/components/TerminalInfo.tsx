@@ -65,12 +65,12 @@ export default function TerminalInfo({terminal} : TerminalInfoProps) {
             <div className={classes.wrapper}>
                 <label>Название</label>
                 <input onChange={onChangeInfo} name='name_terminal' value={terminalInfo?.name_terminal || ''}/>
-                <label>Магазин</label>
-                <input onChange={onChangeInfo} name="name_store" value={terminalInfo?.name_store || ''}/>
-                <label>ККМ</label>
-                <input name="uid_terminal" readOnly value={terminalInfo?.uid_terminal}/>
+                {/*<label>Магазин</label>
+                <input onChange={onChangeInfo} name="name_store" value={terminalInfo?.name_store || ''}/>*/}
                 <label>Организация</label>
                 <input onChange={onChangeInfo} name="organization" value={terminalInfo?.organization || ''}/>
+                <label>ККМ</label>
+                <input name="uid_terminal" readOnly value={terminalInfo?.uid_terminal}/>
                 <label>Дополнительный идентификатор</label>
                 <input onChange={onChangeInfo} name="comment" value={terminalInfo?.comment || ''}/>
                 <label>Адрес</label>
