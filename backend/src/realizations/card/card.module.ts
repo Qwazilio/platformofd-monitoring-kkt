@@ -6,12 +6,9 @@ import { Card } from 'src/entities/card.entity';
 import { TerminalModule } from '../terminal/terminal.module';
 
 @Module({
-  imports: [
-    forwardRef(() => TerminalModule),
-    TypeOrmModule.forFeature([Card])
-  ],
+  imports: [forwardRef(() => TerminalModule), TypeOrmModule.forFeature([Card])],
   providers: [CardService],
   controllers: [CardController],
-  exports: [CardService]
+  exports: [CardService],
 })
-export class CardModule {} 
+export class CardModule {}
