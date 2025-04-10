@@ -7,12 +7,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Card } from 'src/entities/card.entity';
 import { Terminal } from 'src/entities/terminal.entity';
 import { DeleteResult, Repository } from 'typeorm';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class TerminalService {
   constructor(
     @InjectRepository(Terminal)
     private terminalRepository: Repository<Terminal>,
+    private readonly emailService: EmailService,
   ) {}
 
   async getAll(): Promise<Terminal[]> {
@@ -94,9 +96,37 @@ export class TerminalService {
     return result;
   }
 
-  async chekTerminals(): Promise<Terminal[]> {
-    const terminals = await this.terminalRepository.find();
-
+  async checkTerminals(): Promise<Terminal[]> {
+    const terminals = await this.terminalRepository.find({
+      relations: ['active_card'],
+    });
+    const nowTime = Date.now();
+    if (!terminals) throw new NotFoundException('Terminal not found!');
+    terminals.forEach((terminal) => {
+      if (!terminal.active_card) return;
+      const time = new Date(terminal.active_card.end_date_card).getTime();
+      const diffMs = time - nowTime;
+      const diffM = Math.round(diffMs / 1000 / 60 / 60 / 24);
+      if (diffM < 45 && diffM > 0) {
+        const rawDate = new Date(terminal.active_card.end_date_card);
+        const formattedDate = `${String(rawDate.getDate()).padStart(2, '0')}-${String(rawDate.getMonth() + 1).padStart(2, '0')}-${rawDate.getFullYear()}`;
+        this.emailService.sendEmail(
+          [process.env.EMAIL_SHU],
+          `
+            <div>
+              <h2>В терминале "${terminal.name_terminal}" заканчивается ФН</h2>
+              <h3>Данные терминала:</h3> 
+              <ul>
+                  <li>ККТ: ${terminal.uid_terminal}</li>
+                  <li>Адрес: ${terminal.address}</li>
+                  <li>Дата окончания ФН: ${formattedDate}</li>
+              </ul>
+              <h3>Осталось ${diffM}</h3>
+            </div>
+          `,
+        );
+      }
+    });
     return terminals;
   }
 }

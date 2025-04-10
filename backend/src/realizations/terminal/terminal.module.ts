@@ -5,11 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Terminal } from 'src/entities/terminal.entity';
 import { CardModule } from '../card/card.module';
 import { TerminalGateway } from 'src/getways/terminal.getway';
-import { EmailTestService } from '../email/email.service';
+import { EmailService } from '../email/email.service';
 
 @Module({
   imports: [CardModule, TypeOrmModule.forFeature([Terminal])],
-  providers: [TerminalService, TerminalGateway, EmailTestService],
+  providers: [TerminalService, TerminalGateway, EmailService],
   controllers: [TerminalController],
   exports: [TerminalService],
 })

@@ -2,16 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
-export class EmailTestService {
+export class EmailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendTestEmail() {
+  async sendEmail(recipients: string[], text: string) {
     try {
       await this.mailerService.sendMail({
-        to: `${process.env.EMAIL_SHU}`, // Укажите ваш email для проверки
-        subject: 'Тестовое письмо',
+        to: [...recipients],
+        from: 'no-reply <assistant@masterminutka.ru>',
+        subject: 'Оповещение о терминалах',
         text: 'Это тестовое письмо от NestJS Mailer!',
-        html: '<b>Поздравляем, письмо отправлено!</b>',
+        html: text,
       });
       return { success: true, message: 'Письмо отправлено' };
     } catch (error) {

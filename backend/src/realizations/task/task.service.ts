@@ -1,19 +1,19 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
+import { TerminalService } from '../terminal/terminal.service';
 
 @Injectable()
 export class TaskService {
-  private readonly logger = new Logger(TaskService.name);
+  constructor(
+    private readonly terminalService: TerminalService, // инжектируем правильный сервис
+  ) {}
 
-  @Cron('0 13 * * *')
-  async handleDailyTask() {
-    this.logger.log('Запуск ежедневной задачи в 13:00');
-
+  @Cron('0 10 1 * *')
+  async handleDailyTask(): Promise<void> {
     try {
-      // Ваша логика здесь (например, проверка БД и отправка писем)
-      this.logger.log('Задача успешно выполнена');
+      await this.terminalService.checkTerminals();
     } catch (error) {
-      this.logger.error(`Ошибка в задаче: ${error.message}`);
+      console.log(error);
     }
   }
 }
