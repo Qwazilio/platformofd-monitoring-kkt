@@ -29,7 +29,6 @@ export class TerminalController {
 
   @Get('test')
   async getTest(): Promise<boolean> {
-    await this.terminalService.checkTerminals();
     return true;
   }
 }
