@@ -5,13 +5,17 @@ import { MailerService } from '@nestjs-modules/mailer';
 export class EmailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendEmail(recipients: string[], text: string) {
+  async sendEmail(
+    recipients: string[],
+    subject: string = 'Оповещение от помощника',
+    text: string = 'Тут был какой-то текст... Потеряли(',
+  ) {
     try {
       await this.mailerService.sendMail({
         to: [...recipients],
         from: 'no-reply <assistant@masterminutka.ru>',
-        subject: 'Оповещение о терминалах',
-        text: 'Это тестовое письмо от NestJS Mailer!',
+        subject: subject,
+        text: 'Автоматически сгенерированное сообщение',
         html: text,
       });
       return { success: true, message: 'Письмо отправлено' };

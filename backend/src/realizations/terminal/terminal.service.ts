@@ -6,8 +6,9 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Card } from 'src/entities/card.entity';
 import { Terminal } from 'src/entities/terminal.entity';
-import { DeleteResult, Repository } from 'typeorm';
+import { Between, DeleteResult, FindOptionsWhere, Repository } from 'typeorm';
 import { EmailService } from '../email/email.service';
+import * as process from 'node:process';
 
 @Injectable()
 export class TerminalService {
@@ -96,23 +97,49 @@ export class TerminalService {
     return result;
   }
 
-  async checkTerminals(dayStart: number, dayEnd: number): Promise<void> {
-    const terminals = await this.terminalRepository.find({
-      relations: ['active_card'],
-    });
-    const nowTime = Date.now();
-    if (!terminals) throw new NotFoundException('Terminal not found!');
-    terminals.forEach((terminal) => {
+  async checkTerminals(
+    dayStart: number,
+    dayEnd: number,
+    recipient: string[],
+    findOptions: FindOptionsWhere<Terminal> | FindOptionsWhere<Terminal>[],
+  ): Promise<void> {
+    const futureDate = (addDays: number): Date => {
+      const nowDate = new Date();
+      nowDate.setDate(nowDate.getDate() + addDays);
+      return nowDate;
+    };
+
+    const [terminals] = await Promise.all([
+      this.terminalRepository.find({
+        select: [
+          'uid_terminal',
+          'name_terminal',
+          'organization',
+          'address',
+          'active_card',
+        ],
+        where: {
+          ...findOptions,
+          active_card: {
+            end_date_card: Between(futureDate(dayStart), futureDate(dayEnd)),
+          },
+        },
+        relations: ['active_card'],
+      }),
+    ]);
+    if (!terminals) throw new NotFoundException('Terminals not found!');
+    terminals.forEach((terminal: Terminal) => {
       if (!terminal.active_card) return;
       const time = new Date(terminal.active_card.end_date_card).getTime();
-      const diffMs = time - nowTime;
+      const diffMs = time - Date.now();
       const diffM = Math.round(diffMs / 1000 / 60 / 60 / 24);
 
-      const sendMessage = (date: Date): void => {
+      const sendMessage = (date: Date, recipient: string[]): void => {
         const rawDate = new Date(date);
         const formattedDate = `${String(rawDate.getDate()).padStart(2, '0')}-${String(rawDate.getMonth() + 1).padStart(2, '0')}-${rawDate.getFullYear()}`;
         this.emailService.sendEmail(
-          [process.env.EMAIL_SHU],
+          recipient,
+          'Оповещение о терминалах (ФН)',
           `
             <div>
               <h2>В терминале "${terminal.name_terminal}" заканчивается ФН</h2>
@@ -128,10 +155,7 @@ export class TerminalService {
           `,
         );
       };
-
-      if (diffM < dayEnd && diffM > dayStart) {
-        sendMessage(terminal.active_card.end_date_card);
-      }
+      sendMessage(terminal.active_card.end_date_card, recipient);
     });
   }
 }
