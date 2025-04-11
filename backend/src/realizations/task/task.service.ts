@@ -6,7 +6,7 @@ import { TerminalService } from '../terminal/terminal.service';
 export class TaskService {
   constructor(private readonly terminalService: TerminalService) {}
 
-  @Cron('0 8 1 * *')
+  @Cron('0 12 * * *')
   async handleMonthTask(): Promise<void> {
     try {
       await this.terminalService.checkTerminals(3, 45);
