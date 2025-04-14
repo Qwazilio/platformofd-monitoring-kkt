@@ -8,7 +8,6 @@ import { Card } from 'src/entities/card.entity';
 import { Terminal } from 'src/entities/terminal.entity';
 import { Between, DeleteResult, FindOptionsWhere, Repository } from 'typeorm';
 import { EmailService } from '../email/email.service';
-import * as process from 'node:process';
 
 @Injectable()
 export class TerminalService {
