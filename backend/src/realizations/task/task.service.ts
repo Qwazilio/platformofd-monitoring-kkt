@@ -60,7 +60,7 @@ export class TaskService {
       ),
     };
     try {
-      await this.terminalService.checkTerminals(3, 4, recipient, findOptions);
+      await this.terminalService.checkTerminals(40, 41, recipient, findOptions);
     } catch (error) {
       console.log('Error daily crone ', error);
     }
