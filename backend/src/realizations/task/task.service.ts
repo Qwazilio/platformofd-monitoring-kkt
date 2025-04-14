@@ -24,7 +24,7 @@ export class TaskService {
     try {
       await this.terminalService.checkTerminals(0, 4, recipient, findOptions);
     } catch (error) {
-      console.log('Error daily crone ', error);
+      console.log('Error crone in All task', error);
     }
   }
 
@@ -42,7 +42,7 @@ export class TaskService {
     try {
       await this.terminalService.checkTerminals(3, 4, recipient, findOptions);
     } catch (error) {
-      console.log('Error daily crone ', error);
+      console.log('Error crone in SPB task', error);
     }
   }
 
@@ -62,7 +62,7 @@ export class TaskService {
     try {
       await this.terminalService.checkTerminals(40, 41, recipient, findOptions);
     } catch (error) {
-      console.log('Error daily crone ', error);
+      console.log('Error crone in regions task', error);
     }
   }
 }
