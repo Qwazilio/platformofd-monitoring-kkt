@@ -8,12 +8,17 @@ import * as process from 'node:process';
 export class TaskService {
   constructor(private readonly terminalService: TerminalService) {}
 
+  @Cron('0 9 1 * *')
+  async handleMonthlyTask(): Promise<void> {
+    console.log('Call monthly task');
+    await this.nearWorkTerminalsRegion();
+  }
+
   @Cron('0 9 * * *')
   async handleDailyTask(): Promise<void> {
     console.log('Call daily task');
     await this.nearAllTerminals();
     await this.nearWorkTerminalsSPB();
-    await this.nearWorkTerminalsRegion();
   }
 
   async nearAllTerminals(): Promise<void> {
@@ -47,7 +52,7 @@ export class TaskService {
   }
 
   async nearWorkTerminalsRegion(): Promise<void> {
-    const recipient = [process.env.EMAIL_GORODILOV];
+    const recipient = [process.env.EMAIL_GORODILOV, process.env.EMAIL_SHU];
     const findOptions = {
       deleted: false,
       stock: false,
@@ -60,7 +65,7 @@ export class TaskService {
       ),
     };
     try {
-      await this.terminalService.checkTerminals(40, 41, recipient, findOptions);
+      await this.terminalService.checkTerminals(10, 40, recipient, findOptions);
     } catch (error) {
       console.log('Error crone in regions task', error);
     }
