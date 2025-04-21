@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const SOCKET_URL = `${process.env.BACKEND_SERVER_URL}`;
+const SOCKET_URL = process.env.NEXT_PUBLIC_BACKEND_SERVER_URL;
 
 export default function useSocket() {
     const socketRef = useRef<Socket | null>(null)
