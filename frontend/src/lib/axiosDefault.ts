@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosDefault= axios.create({
-    baseURL: 'http://192.168.1.3:61708',  
+    baseURL: process.env.BACKEND_SERVER_URL,
 });
 
 axiosDefault.interceptors.request.use((config) => {
