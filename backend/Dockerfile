@@ -3,11 +3,12 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+# Создаем пользователя с ID 1000 (обычный пользователь)
+RUN adduser -D -u 1000 appuser
+
 # Копируем package.json и устанавливаем зависимости
 COPY package*.json ./
 RUN npm install
-# Установка необходимых пакетов для SQLite
-RUN apk add --no-cache sqlite-libs
 
 # Копируем исходный код
 COPY . .

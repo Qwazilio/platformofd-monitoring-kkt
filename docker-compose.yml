@@ -11,6 +11,7 @@ services:
       - /app/node_modules
       - "C:/SQLite/Monitoring OFD:/app/data" #sqlite Database
     restart: always
+    user: "1000:1000"
 
   nextjs:
     build: ./frontend
@@ -24,6 +25,7 @@ services:
       - /app/node_modules
       - /app/.next
     restart: always
+    user: "1000:1000"
 
 networks:
   app-network:
