@@ -1,5 +1,5 @@
 # Используем Node.js 18
-FROM node:18-alpine 
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -13,8 +13,7 @@ COPY . .
 # Собираем TypeScript в JavaScript
 RUN npm run build
 
-# Открываем порт (например, 3001)
-EXPOSE 61707
+EXPOSE 3000
 
 # Запускаем сервер
 CMD ["npm", "run", "start"]

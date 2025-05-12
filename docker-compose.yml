@@ -1,24 +1,29 @@
 services:
   nestjs:
     build: ./backend
+    container_name: nestjs-app
     ports:
-      - "61708:61708"
+      - "61708:3001"
     networks:
       - app-network
     volumes:
       - ./backend:/app
       - /app/node_modules
+      - "C:/SQLite/Monitoring OFD:/app/data" #sqlite Database
+    restart: always
 
   nextjs:
     build: ./frontend
+    container_name: nextjs-app
     ports:
-      - "61707:61707"
+      - "61707:3000"
     networks:
       - app-network
     volumes:
       - ./frontend:/app
       - /app/node_modules
       - /app/.next
+    restart: always
 
 networks:
   app-network:

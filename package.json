@@ -2,6 +2,9 @@
   "devDependencies": {
     "concurrently": "^9.1.0"
   },
+  "dependencies": {
+    "sqlite3": "^5.1.7"
+  },
   "scripts": {
     "build": "npm run build:frontend && npm run build:backend",
     "build:frontend": "cd ./frontend && npm run build",

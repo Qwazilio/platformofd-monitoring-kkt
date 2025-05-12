@@ -1,0 +1,19 @@
+# Игнорируем папку node_modules
+node_modules
+# Логи и кэш
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# Базы данных и папки с данными
+data/
+*.db
+# Игнорируем Git-файлы
+.git
+.gitignore
+# Кэш кода
+dist/
+build/
+# IDE и системные файлы
+*.swp
+*.DS_Store
