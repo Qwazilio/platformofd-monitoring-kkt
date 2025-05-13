@@ -64,7 +64,7 @@ export class TaskService {
       ),
     };
     try {
-      await this.terminalService.checkTerminals(10, 40, recipient, findOptions);
+      await this.terminalService.checkTerminals(15, 45, recipient, findOptions);
     } catch (error) {
       console.log('Error crone in regions task', error);
     }
