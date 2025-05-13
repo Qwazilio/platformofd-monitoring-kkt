@@ -44,7 +44,7 @@ export class TaskService {
       ]),
     };
     try {
-      await this.terminalService.checkTerminals(3, 4, recipient, findOptions);
+      await this.terminalService.checkTerminals(4, 5, recipient, findOptions);
     } catch (error) {
       console.log('Error crone in SPB task', error);
     }
