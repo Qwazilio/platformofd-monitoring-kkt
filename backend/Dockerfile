@@ -5,7 +5,6 @@ WORKDIR /app
 
 # Копируем package.json и устанавливаем зависимости
 COPY package*.json ./
-RUN npm install react-toastify --legacy-peer-deps
 RUN npm install
 
 # Копируем исходный код
