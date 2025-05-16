@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { Dispatch, SetStateAction} from "react";
+import {toast} from "react-toastify";
 
 interface Kkt {
     kktName: string; // Название ККТ
@@ -30,6 +31,7 @@ export default function TerminalImportAPI({setTerminals} : TerminalImportAPIProp
             if(!response.data) return;
             const {kkts, branches} = response.data.kktList.orgBranches[0]
 
+            //Форматирование данных
             const sortKkts = kkts.map((kkt : Kkt) => ([{
                 name_terminal: kkt.kktName,
                 uid_terminal: kkt.kktNumber,
@@ -45,7 +47,8 @@ export default function TerminalImportAPI({setTerminals} : TerminalImportAPIProp
                 end_date_card: kkt.kktFnDateTill
             } as CardEntity
             ]))            
-            
+
+            //Забыл чет
             const sortKktsInStores = branches.flatMap(branch => 
                 branch.kkts.map((kkt: Kkt) => ([{
                     name_terminal: kkt.kktName,
@@ -63,10 +66,12 @@ export default function TerminalImportAPI({setTerminals} : TerminalImportAPIProp
                     end_date_card: kkt.kktFnDateTill,
                 } as CardEntity]))
             );
+            toast.success("Данные готовы к импорту");
             setTerminals([...sortKkts, ...sortKktsInStores])
             
         } catch (error) {
-            console.log(`API error!${error}`)
+            console.log(`API error!: ${error}`)
+            toast.error(error.message)
         }
     }
 

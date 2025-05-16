@@ -9,6 +9,7 @@ import OffcanvasWindow from "@/ui/offcanvasWindow";
 import useSocket from "@/hooks/useSocket";
 import TerminalInfo from "./TerminalInfo";
 import TerminalExport from "./TerminalExport";
+import {ToastContainer} from "react-toastify";
 
 export default function TerminalList() {
   const socket = useSocket();
@@ -28,6 +29,7 @@ export default function TerminalList() {
     else setShowImport(true);
   };
 
+  //Для загрузки данных из сервера
   const getTerminalList = async () => {
     try {
       const response = await axiosDefault.get("/terminal/list");
@@ -41,6 +43,7 @@ export default function TerminalList() {
     }
   };
 
+  //Сортировка по дате окончания ФН
   const sortByFN = (list: TerminalEntity[]) => {
     const sortedList = list.toSorted((a: TerminalEntity, b: TerminalEntity) => {
       const endDateA = new Date(a.active_card.end_date_card);
@@ -50,6 +53,7 @@ export default function TerminalList() {
     return sortedList;
   };
 
+  //Сортировка по дате окончания подписки ОФД
   const sortBySub = (list: TerminalEntity[]) => {
     const sortedList = list.toSorted((a: TerminalEntity, b: TerminalEntity) => {
       const endDateA = new Date(a.end_date_sub);
@@ -59,6 +63,7 @@ export default function TerminalList() {
     return sortedList;
   };
 
+  //Для формирования списка данных всех терминалов из node
   const viewList = useCallback((terminals: TerminalEntity[]) => {
     const new_list = terminals
       .filter(terminal => 
@@ -71,13 +76,14 @@ export default function TerminalList() {
     setCount(new_list.length);
   }, [showDeleted, showStock, setList, setCount]);
 
+  //Формирование данных для экспорта
   const listForExport = (terminals: TerminalEntity[]) =>
     terminals.filter(
       (terminal) =>
         showDeleted === terminal.deleted && showStock === terminal.stock
     );
     
-
+  //Формирование данных для отображения одного терминала
   const node = (terminal: TerminalEntity) => {
     return (
       <div
@@ -108,6 +114,7 @@ export default function TerminalList() {
     );
   };
 
+  //Для подробного просмотра данных терминала
   const viewTerminal = async (terminal_id: number) => {
     try {
       const response = await axiosDefault.get("/terminal", {
@@ -229,6 +236,7 @@ export default function TerminalList() {
         </div>
         {list}
       </div>
+      <ToastContainer/>
     </div>
   );
 }
