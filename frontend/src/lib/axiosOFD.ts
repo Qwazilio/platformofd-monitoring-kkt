@@ -1,73 +1,22 @@
 import axios from 'axios';
+import {NextResponse} from "next/server";
 
-const baseInstance = () => (axios.create({
-    baseURL: 'https://ofv-api-v0-1-1.evotor.ru/',  
-}));
+async function ApiRequestForDataKKT(token: string) {
+    const config = {
+        headers: {
+            token: token,
+            accept: 'application/json',
+            acceptCharset: 'utf-8'
+        }
+    }
+    try {
+        const apiResponse = await axios.get("https://ofv-api-v0-1-1.evotor.ru/v1/client/kkts", config);
+        return NextResponse.json(apiResponse.data, { status: 200 });
+    } catch (error) {
+        console.error(error.message);
+        if(error.response.status === 502) return NextResponse.json({error: "Сервер API не отвечает"},{ status: 502 });
+        return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 });
+    }
+}
 
-const axiosIPK = baseInstance();
-const axiosIPG = baseInstance();
-const axiosNeo = baseInstance();
-const axiosMM = baseInstance();
-const axiosMMR = baseInstance();
-const axiosDB = baseInstance();
-
-axiosIPK.interceptors.request.use((config) => {
-    config.headers['token'] = process.env.IPK_TOKEN
-    config.headers['Accept'] = 'application/json'
-    config.headers['Accept-Charset'] = 'utf-8'
-    return config; 
-}, (error) => {
-    return Promise.reject(error);
-});
-
-axiosIPG.interceptors.request.use((config) => {
-    config.headers['token'] = process.env.IPG_TOKEN
-    config.headers['Accept'] = 'application/json'
-    config.headers['Accept-Charset'] = 'utf-8'
-    return config; 
-}, (error) => {
-    return Promise.reject(error);
-});
-
-
-axiosNeo.interceptors.request.use((config) => {
-    config.headers['token'] = process.env.NEO_TOKEN
-    config.headers['Accept'] = 'application/json'
-    config.headers['Accept-Charset'] = 'utf-8'
-    return config; 
-}, (error) => {
-    return Promise.reject(error);
-});
-
-
-axiosMM.interceptors.request.use((config) => {
-    config.headers['token'] = process.env.MM_TOKEN
-    config.headers['Accept'] = 'application/json'
-    config.headers['Accept-Charset'] = 'utf-8'
-    return config; 
-}, (error) => {
-    return Promise.reject(error);
-});
-
-
-axiosMMR.interceptors.request.use((config) => {
-    config.headers['token'] = process.env.MMR_TOKEN
-    config.headers['Accept'] = 'application/json'
-    config.headers['Accept-Charset'] = 'utf-8'
-    return config; 
-}, (error) => {
-    return Promise.reject(error);
-});
-
-
-axiosDB.interceptors.request.use((config) => {
-    config.headers['token'] = process.env.DB_TOKEN
-    config.headers['Accept'] = 'application/json'
-    config.headers['Accept-Charset'] = 'utf-8'
-    return config; 
-}, (error) => {
-    return Promise.reject(error);
-});
-
-
-export {axiosIPK, axiosDB, axiosMM, axiosMMR, axiosNeo, axiosIPG}
+export {ApiRequestForDataKKT}
