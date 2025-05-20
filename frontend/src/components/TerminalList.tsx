@@ -66,12 +66,12 @@ export default function TerminalList() {
   //Для формирования списка данных всех терминалов из node
   const viewList = useCallback((terminals: TerminalEntity[]) => {
     const new_list = terminals
-      .filter(terminal => 
-        (showDeleted === terminal.deleted) && 
+      .filter(terminal =>
+        (showDeleted === terminal.deleted) &&
         (showStock === terminal.stock)
       )
       .map(node);
-  
+
     setList(new_list);
     setCount(new_list.length);
   }, [showDeleted, showStock, setList, setCount]);

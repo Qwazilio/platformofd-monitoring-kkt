@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { TerminalService } from '../terminal/terminal.service';
 import { In, Not } from 'typeorm';
+import * as process from 'node:process';
 
 @Injectable()
 export class TaskService {
@@ -21,7 +22,7 @@ export class TaskService {
   }
 
   async nearAllTerminals(): Promise<void> {
-    const recipient = [process.env.EMAIL_SHU];
+    const recipient = [process.env.EMAIL_ADMIN];
     const findOptions = {
       deleted: false,
     };
@@ -33,15 +34,11 @@ export class TaskService {
   }
 
   async nearWorkTerminalsSPB(): Promise<void> {
-    const recipient = [process.env.EMAIL_GORODILOV];
+    const recipient = [process.env.EMAIL_SKLAD];
     const findOptions = {
       deleted: false,
       stock: false,
-      organization: In([
-        'АО "НЕО СЕРВИСЕ"',
-        'АО "МАСТЕР МИНУТКА"',
-        'ИП Жидков Андрей Юрьевич',
-      ]),
+      organization: In([process.env.NEO, process.env.MM, process.env.IP]),
     };
     try {
       await this.terminalService.checkTerminals(4, 5, recipient, findOptions);
@@ -51,17 +48,11 @@ export class TaskService {
   }
 
   async nearWorkTerminalsRegion(): Promise<void> {
-    const recipient = [process.env.EMAIL_GORODILOV, process.env.EMAIL_SHU];
+    const recipient = [process.env.EMAIL_SKLAD, process.env.EMAIL_ADMIN];
     const findOptions = {
       deleted: false,
       stock: false,
-      organization: Not(
-        In([
-          'АО "НЕО СЕРВИСЕ"',
-          'АО "МАСТЕР МИНУТКА"',
-          'ИП Жидков Андрей Юрьевич',
-        ]),
-      ),
+      organization: Not(In([process.env.NEO, process.env.MM, process.env.IP])),
     };
     try {
       await this.terminalService.checkTerminals(15, 45, recipient, findOptions);
