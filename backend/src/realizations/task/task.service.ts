@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { TerminalService } from '../terminal/terminal.service';
 import { In, Not } from 'typeorm';
-import * as process from 'node:process';
 
 @Injectable()
 export class TaskService {
