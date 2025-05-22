@@ -132,7 +132,6 @@ export class TerminalService {
       const time = new Date(terminal.active_card.end_date_card).getTime();
       const diffMs = time - Date.now();
       const diffM = Math.round(diffMs / 1000 / 60 / 60 / 24);
-
       const sendMessage = (date: Date, recipient: string[]): void => {
         const rawDate = new Date(date);
         const formattedDate = `${String(rawDate.getDate()).padStart(2, '0')}-${String(rawDate.getMonth() + 1).padStart(2, '0')}-${rawDate.getFullYear()}`;
@@ -154,6 +153,7 @@ export class TerminalService {
           `,
         );
       };
+      console.log(`Message send to ${recipient}`);
       sendMessage(terminal.active_card.end_date_card, recipient);
     });
   }
