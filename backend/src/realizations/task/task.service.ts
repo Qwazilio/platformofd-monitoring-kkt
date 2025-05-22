@@ -7,13 +7,13 @@ import { In, Not } from 'typeorm';
 export class TaskService {
   constructor(private readonly terminalService: TerminalService) {}
 
-  @Cron('0 10 1 * *')
+  @Cron('0 9 1 * *')
   async handleMonthlyTask(): Promise<void> {
     console.log('Call monthly task');
     await this.nearWorkTerminalsRegion();
   }
 
-  @Cron('0 10 * * *')
+  @Cron('0 9 * * *')
   async handleDailyTask(): Promise<void> {
     console.log('Call daily task');
     await this.nearAllTerminals();
