@@ -7,13 +7,13 @@ import { In, Not } from 'typeorm';
 export class TaskService {
   constructor(private readonly terminalService: TerminalService) {}
 
-  @Cron('0 7 1 * *')
+  @Cron('0 8 1 * *')
   async handleMonthlyTask(): Promise<void> {
     console.log('Call monthly task');
     await this.nearWorkTerminalsRegion();
   }
 
-  @Cron('0 7 * * *')
+  @Cron('0 8 * * *')
   async handleDailyTask(): Promise<void> {
     console.log('Call daily task');
     await this.nearAllTerminals();
@@ -40,7 +40,7 @@ export class TaskService {
       organization: In([process.env.NEO, process.env.MM, process.env.IP]),
     };
     try {
-      await this.terminalService.checkTerminals(4, 5, recipient, findOptions);
+      await this.terminalService.checkTerminals(6, 7, recipient, findOptions);
     } catch (error) {
       console.log('Error crone in SPB task', error);
     }
