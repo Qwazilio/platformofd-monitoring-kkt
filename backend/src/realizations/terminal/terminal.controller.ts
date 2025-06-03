@@ -3,7 +3,7 @@ import { TerminalService } from './terminal.service';
 import { CardService } from '../card/card.service';
 import { Terminal } from 'src/entities/terminal.entity';
 import { EmailService } from '../email/email.service';
-import {In, Not} from "typeorm";
+
 
 @Controller('terminal')
 export class TerminalController {
@@ -30,16 +30,6 @@ export class TerminalController {
 
   @Get('test')
   async getTest(): Promise<boolean> {
-    const recipient = [process.env.EMAIL_SKLAD, process.env.EMAIL_ADMIN];
-    const findOptions = {
-      deleted: false,
-      stock: false,
-    };
-    try {
-      await this.terminalService.checkTerminals(15, 45, recipient, findOptions);
-    } catch (error) {
-      console.log('Error crone in regions task', error);
-    }
     return true;
   }
 }

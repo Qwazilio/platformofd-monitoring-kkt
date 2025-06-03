@@ -8,7 +8,7 @@ export class EmailService {
   async sendEmail(
     recipients: string[],
     subject: string = 'Оповещение от помощника',
-    text: string = 'Тут был какой-то текст... Потеряли(',
+    text?: string,
   ) {
     try {
       await this.mailerService.sendMail({

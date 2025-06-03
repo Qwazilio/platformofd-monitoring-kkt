@@ -26,7 +26,7 @@ export class TaskService {
       deleted: false,
     };
     try {
-      await this.terminalService.checkTerminals(0, 4, recipient, findOptions);
+      await this.terminalService.checkTerminals(2, 3, recipient, findOptions);
     } catch (error) {
       console.log('Error crone in All task', error);
     }
@@ -37,7 +37,7 @@ export class TaskService {
     const findOptions = {
       deleted: false,
       stock: false,
-      organization: In([process.env.NEO, process.env.MM, process.env.IP]),
+      organization: Not(In([process.env.DB, process.env.MMR])),
     };
     try {
       await this.terminalService.checkTerminals(7, 8, recipient, findOptions);
