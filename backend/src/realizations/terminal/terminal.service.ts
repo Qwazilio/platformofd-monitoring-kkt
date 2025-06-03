@@ -132,7 +132,12 @@ export class TerminalService {
       }),
     ]);
 
-    if (!terminals) throw new NotFoundException('Terminals not found!');
+    if (!terminals || terminals.length === 0) {
+      console.log(
+        'Нет терминалов с подходящими сроками — письмо не отправляется.',
+      );
+      return;
+    }
     const message: string[] = [];
     terminals.forEach((terminal: Terminal) => {
       if (!terminal.active_card) return;
