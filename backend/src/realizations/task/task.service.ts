@@ -40,7 +40,7 @@ export class TaskService {
       organization: In([process.env.NEO, process.env.MM, process.env.IP]),
     };
     try {
-      await this.terminalService.checkTerminals(6, 7, recipient, findOptions);
+      await this.terminalService.checkTerminals(7, 8, recipient, findOptions);
     } catch (error) {
       console.log('Error crone in SPB task', error);
     }

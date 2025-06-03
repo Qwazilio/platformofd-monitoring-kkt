@@ -126,9 +126,12 @@ export class TerminalService {
         relations: ['active_card'],
       }),
     ]);
+    console.log(recipient);
+    console.log(findOptions);
     if (!terminals) throw new NotFoundException('Terminals not found!');
     terminals.forEach((terminal: Terminal) => {
       if (!terminal.active_card) return;
+      console.log(terminal);
       const time = new Date(terminal.active_card.end_date_card).getTime();
       const diffMs = time - Date.now();
       const diffM = Math.round(diffMs / 1000 / 60 / 60 / 24);
@@ -154,7 +157,7 @@ export class TerminalService {
         );
       };
       console.log(`Message send to ${recipient}`);
-      sendMessage(terminal.active_card.end_date_card, recipient);
+      //sendMessage(terminal.active_card.end_date_card, recipient);
     });
   }
 }
