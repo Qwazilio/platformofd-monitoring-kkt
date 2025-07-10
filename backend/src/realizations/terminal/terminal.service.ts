@@ -143,10 +143,7 @@ export class TerminalService {
       if (!terminal.active_card) return;
 
       const rawDate = new Date(terminal.active_card.end_date_card);
-      const nextDay = new Date(rawDate);
-      nextDay.setDate(nextDay.getDate() + 1);
-
-      const formattedDate = `${String(nextDay.getDate()).padStart(2, '0')}-${String(nextDay.getMonth() + 1).padStart(2, '0')}-${nextDay.getFullYear()}`;
+      const formattedDate = `${String(rawDate.getDate()).padStart(2, '0')}-${String(rawDate.getMonth() + 1).padStart(2, '0')}-${rawDate.getFullYear()}`;
 
       const partMessage: string = `<li>     
                                       <h3>${terminal.name_terminal}</h3> 

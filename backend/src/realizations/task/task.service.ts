@@ -16,6 +16,7 @@ export class TaskService {
   @Cron('0 8 * * *')
   async handleDailyTask(): Promise<void> {
     console.log('Call daily task');
+    await this.nearAllTerminals();
     await this.nearWorkTerminalsSPB();
   }
 
@@ -32,7 +33,7 @@ export class TaskService {
   }
 
   async nearWorkTerminalsSPB(): Promise<void> {
-    const recipient = [process.env.EMAIL_SKLAD, process.env.EMAIL_ADMIN];
+    const recipient = [process.env.EMAIL_SKLAD];
     const findOptions = {
       deleted: false,
       stock: false,
