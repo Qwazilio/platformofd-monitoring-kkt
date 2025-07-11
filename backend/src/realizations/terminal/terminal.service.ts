@@ -101,7 +101,7 @@ export class TerminalService {
     dayEnd: number,
     recipient: string[],
     findOptions: FindOptionsWhere<Terminal> | FindOptionsWhere<Terminal>[],
-  ): Promise<any> {
+  ): Promise<void> {
     const futureDate = (addDays: number): Date => {
       const nowDate = new Date();
       nowDate.setDate(nowDate.getDate() + addDays);
@@ -123,45 +123,41 @@ export class TerminalService {
             end_date_card: Between(futureDate(dayStart), futureDate(dayEnd)),
           },
         },
-        order: {
-          active_card: {
-            end_date_card: 'ASC',
-          },
-        },
         relations: ['active_card'],
       }),
     ]);
-
+    console.log(recipient);
+    console.log(findOptions);
     if (!terminals) throw new NotFoundException('Terminals not found!');
-    const message: string[] = [];
     terminals.forEach((terminal: Terminal) => {
       if (!terminal.active_card) return;
-
-      const rawDate = new Date(terminal.active_card.end_date_card);
-      const formattedDate = `${String(rawDate.getDate()).padStart(2, '0')}-${String(rawDate.getMonth() + 1).padStart(2, '0')}-${rawDate.getFullYear()}`;
-
-      const partMessage: string = `<li>     
-                                      <h3>${terminal.name_terminal}</h3> 
-                                      <ul>
-                                        <li>Организация: ${terminal.organization}</li>
-                                        <li>ККТ: ${terminal.uid_terminal}</li>
-                                        <li>Адрес: ${terminal.address}</li>
-                                        <li>Дата окончания ФН: ${formattedDate}</li>
-                                      </ul>                                      
-                                    </li>`;
-      message.push(partMessage);
+      console.log(terminal);
+      const time = new Date(terminal.active_card.end_date_card).getTime();
+      const diffMs = time - Date.now();
+      const diffM = Math.round(diffMs / 1000 / 60 / 60 / 24);
+      const sendMessage = (date: Date, recipient: string[]): void => {
+        const rawDate = new Date(date);
+        const formattedDate = `${String(rawDate.getDate()).padStart(2, '0')}-${String(rawDate.getMonth() + 1).padStart(2, '0')}-${rawDate.getFullYear()}`;
+        this.emailService.sendEmail(
+          recipient,
+          'Оповещение о терминалах (ФН)',
+          `
+            <div>
+              <h2>В терминале "${terminal.name_terminal}" заканчивается ФН</h2>
+              <h3>Данные терминала:</h3> 
+              <ul>
+                <li>Организация: ${terminal.organization}</li>
+                <li>ККТ: ${terminal.uid_terminal}</li>
+                <li>Адрес: ${terminal.address}</li>
+                <li>Дата окончания ФН: ${formattedDate}</li>
+              </ul>
+              <h3>Осталось дней: ${diffM}</h3>
+            </div>
+          `,
+        );
+      };
       console.log(`Message send to ${recipient}`);
+      //sendMessage(terminal.active_card.end_date_card, recipient);
     });
-    const content: string = `
-      <h2>Сводка по ближайшим срокам окончания ФН в терминалах</h2>
-      <ol>
-        ${message.join('\n')}
-      </ol>
-    `;
-    await this.emailService.sendEmail(
-      recipient,
-      'Срок действия ФН истекает!',
-      content,
-    );
   }
 }
