@@ -1,5 +1,3 @@
-'use client'
-
 import axios from "axios";
 import { Dispatch, SetStateAction} from "react";
 import {toast} from "react-toastify";
@@ -17,14 +15,12 @@ interface Kkt {
 }
 
 interface TerminalImportAPIProps{
-    setTerminals: Dispatch<SetStateAction<(TerminalEntity | CardEntity)[][]>>
-    visible: Dispatch<SetStateAction<boolean>>
-    sendOnServer: () => void
+    setKkt: Dispatch<SetStateAction<TerminalEntity[]>>
 }
-export default function TerminalImportAPI({setTerminals} : TerminalImportAPIProps) {
+export default function KKTImportAPI({setKkt} : TerminalImportAPIProps) {
 
     const fetchTerminals = async (route : string) => {
-        setTerminals([])
+        setKkt([])
         try{
             const response = await axios.get(route)
 
@@ -32,7 +28,7 @@ export default function TerminalImportAPI({setTerminals} : TerminalImportAPIProp
             const {kkts, branches} = response.data.kktList.orgBranches[0]
 
             //Форматирование данных
-            const sortKkts = kkts.map((kkt : Kkt) => ([{
+            const sortKkts: TerminalEntity[] = kkts.map((kkt : Kkt) => ({
                 name_terminal: kkt.kktName,
                 uid_terminal: kkt.kktNumber,
                 end_date_sub: kkt.kktCurrentSubscriptionDateTill,
@@ -41,16 +37,15 @@ export default function TerminalImportAPI({setTerminals} : TerminalImportAPIProp
                 last_active: kkt.kktLastCheckStatusDate,
                 reg_number: kkt.kktRegNumber,
                 comment: kkt.deviceComment,
-            } as TerminalEntity,                 
-            {
-                uid_card: kkt.kktFN,
-                end_date_card: kkt.kktFnDateTill
-            } as CardEntity
-            ]))            
+                active_card : {
+                    uid_card: kkt.kktFN,
+                    end_date_card: kkt.kktFnDateTill
+                } as CardEntity
+            } as TerminalEntity))
 
             //Забыл чет
-            const sortKktsInStores = branches.flatMap(branch => 
-                branch.kkts.map((kkt: Kkt) => ([{
+            const sortKktsInStores: TerminalEntity[] = branches.flatMap(branch =>
+                branch.kkts.map((kkt: Kkt) => ({
                     name_terminal: kkt.kktName,
                     uid_terminal: kkt.kktNumber,
                     end_date_sub: kkt.kktCurrentSubscriptionDateTill,
@@ -59,16 +54,15 @@ export default function TerminalImportAPI({setTerminals} : TerminalImportAPIProp
                     last_active: kkt.kktLastCheckStatusDate,
                     comment: kkt.deviceComment,
                     reg_number: kkt.kktRegNumber,
-                    name_store: branch.branchName
-                } as TerminalEntity,
-                {
-                    uid_card: kkt.kktFN,
-                    end_date_card: kkt.kktFnDateTill,
-                } as CardEntity]))
+                    name_store: branch.branchName,
+                    active_card: {
+                        uid_card: kkt.kktFN,
+                        end_date_card: kkt.kktFnDateTill,
+                    } as CardEntity
+                } as TerminalEntity))
             );
             toast.success("Данные готовы к импорту");
-            setTerminals([...sortKkts, ...sortKktsInStores])
-            
+            setKkt([...sortKkts, ...sortKktsInStores])
         } catch (error) {
             console.log(`API error!: ${error}`)
             toast.error(error.message)
@@ -76,7 +70,7 @@ export default function TerminalImportAPI({setTerminals} : TerminalImportAPIProp
     }
 
     return(
-        <div >
+        <div>
             <h2 style={{textAlign: "center", fontSize: '1.2em'}}>Импорт из ОФД</h2>
             <button onClick={() => fetchTerminals('/api/ipk')}>ИПК</button>
             <button onClick={() => fetchTerminals('/api/ipg')}>ИПЖ</button>

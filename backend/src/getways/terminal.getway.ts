@@ -3,7 +3,6 @@ import {
   WebSocketServer,
   SubscribeMessage,
   MessageBody,
-  OnGatewayInit,
   OnGatewayConnection,
   OnGatewayDisconnect,
   ConnectedSocket,
@@ -29,8 +28,13 @@ export class TerminalGateway
     private readonly cardService: CardService,
   ) {}
 
-  handleConnection(client: Socket) {
-    //console.log(`Client connected: ${client.id}`);
+  async handleConnection(client: Socket) {
+    try {
+      const kkt = await this.terminalService.getAll();
+      client.emit('kktPull', kkt);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   handleDisconnect(client: Socket) {
@@ -75,6 +79,6 @@ export class TerminalGateway
 
   async sendTerminalList() {
     const terminals = await this.terminalService.getAll();
-    this.server.emit('terminalListChanged', terminals);
+    this.server.emit('kktListChanged', terminals);
   }
 }

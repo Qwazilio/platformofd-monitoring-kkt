@@ -126,8 +126,6 @@ export class TerminalService {
         relations: ['active_card'],
       }),
     ]);
-    console.log(recipient);
-    console.log(findOptions);
     if (!terminals) throw new NotFoundException('Terminals not found!');
     terminals.forEach((terminal: Terminal) => {
       if (!terminal.active_card) return;

@@ -1,13 +1,17 @@
 import { CancelCircleIcon } from "@/media/defaultIcons"
-import classes from "@/ui/offcanvasWindow.module.scss"
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
+import classes from "@/ui/modalWindow.module.scss"
+import React, { useEffect, useState } from "react"
+import useModalWindow from "@/hooks/useModalWindow";
 
-interface OffcanvasWindowProps{ 
+export interface ModalWindowBase {
+    id: string;
+}
+interface ModalWindowProps extends ModalWindowBase {
     title: string
-    close: Dispatch<SetStateAction<boolean>>
     children?: React.ReactNode
 }
-export default function OffcanvasWindow ({title, close, children} : OffcanvasWindowProps) {
+export default function ModalWindow ({id, title, children} : ModalWindowProps) {
+    const {closeWindow} = useModalWindow()
     const [position, setPosition] = useState({ x: window.innerWidth/ 2 - 250, y:  50});
     const [fixPosition, setFixPosition] = useState({x: 0, y: 0});
     const [dragging, setDragging] = useState(false);
@@ -19,7 +23,14 @@ export default function OffcanvasWindow ({title, close, children} : OffcanvasWin
         window.removeEventListener('mouseup', handleMouseUp)
       }
     };
-  
+
+    useEffect(() => {
+        document.addEventListener('keydown', HotKeyClose);
+        return () => {
+            document.removeEventListener('keydown', HotKeyClose);
+        };
+    }, [])
+
     useEffect(() => {
       if(dragging){
         window.addEventListener('mousemove', handleMouseMove)
@@ -44,16 +55,9 @@ export default function OffcanvasWindow ({title, close, children} : OffcanvasWin
       setDragging(true)
     }
 
-    const closeWindow = (event: KeyboardEvent) => {
-      if(event.key === 'Escape') close(false)      
+    const HotKeyClose = (event: KeyboardEvent) => {
+      if(event.key === 'Escape') closeWindow(id)
     }
-
-    useEffect(() => {
-      document.addEventListener('keydown', closeWindow);
-      return () => {
-        document.removeEventListener('keydown', closeWindow);
-      };
-    }, [])
 
     return(
         <div className={classes.wrapper}
@@ -64,7 +68,7 @@ export default function OffcanvasWindow ({title, close, children} : OffcanvasWin
         >
             <div className={classes.top}  onMouseDown={(event) => handleMouseDown(event)}>
               <div className={classes.title}>{title}</div>
-              <div className={classes.cancel} onClick={() => close(false)}><CancelCircleIcon color={"white"}/></div>
+              <div className={classes.cancel} onClick={() => closeWindow(id)}><CancelCircleIcon color={"white"}/></div>
             </div>
             <div className={classes.body}>
                 {children}
