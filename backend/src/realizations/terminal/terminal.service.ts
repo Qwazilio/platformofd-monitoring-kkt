@@ -85,7 +85,6 @@ export class TerminalService {
       kkt.active_card.uid_card == kkt_updated.active_card.uid_card
     ) {
       const kkt_merged = this.terminalRepository.merge(kkt, kkt_updated);
-      console.log(kkt_merged);
       return await this.terminalRepository.save(kkt_merged);
     } else if (!kkt_updated.active_card) {
       const kkt_merged = this.terminalRepository.merge(kkt, kkt_updated);
@@ -158,7 +157,6 @@ export class TerminalService {
     if (!terminals) throw new NotFoundException('Terminals not found!');
     terminals.forEach((terminal: Terminal) => {
       if (!terminal.active_card) return;
-      console.log(terminal);
       const time = new Date(terminal.active_card.end_date_card).getTime();
       const diffMs = time - Date.now();
       const diffM = Math.round(diffMs / 1000 / 60 / 60 / 24);
