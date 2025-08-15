@@ -1,4 +1,4 @@
-interface TerminalEntity{
+interface KktEntity {
     id?: number
     uid_terminal: string
     organization?: string
@@ -21,5 +21,5 @@ interface CardEntity{
     id?: number
     uid_card: string
     end_date_card: Date
-    terminal?: TerminalEntity
+    terminal?: KktEntity
 }

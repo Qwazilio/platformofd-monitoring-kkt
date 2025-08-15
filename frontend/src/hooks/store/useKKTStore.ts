@@ -1,10 +1,10 @@
 import { create } from "zustand"
 
 interface KKTContext {
-    kkts: TerminalEntity[] |[]
-    setKkts: ( newMessages: TerminalEntity[] | ((prev: TerminalEntity[]) => TerminalEntity[])) => void
-    filtredKkts: TerminalEntity[] | []
-    setFiltredKkts: ( newMessages: TerminalEntity[] | ((prev: TerminalEntity[]) => TerminalEntity[])) => void
+    kkts: KktEntity[] |[]
+    setKkts: ( newMessages: KktEntity[] | ((prev: KktEntity[]) => KktEntity[])) => void
+    filtredKkts: KktEntity[] | []
+    setFiltredKkts: ( newMessages: KktEntity[] | ((prev: KktEntity[]) => KktEntity[])) => void
     filter: string
     setFilter: (newFilter: string) => void
     isShowStock: boolean

@@ -1,19 +1,17 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Card } from 'src/entities/card.entity';
 import { Terminal } from 'src/entities/terminal.entity';
 import { Between, DeleteResult, FindOptionsWhere, Repository } from 'typeorm';
 import { EmailService } from '../email/email.service';
+import { CardService } from '../card/card.service';
+import { Card } from '../../entities/card.entity';
 
 @Injectable()
 export class TerminalService {
   constructor(
     @InjectRepository(Terminal)
     private terminalRepository: Repository<Terminal>,
+    private readonly cardService: CardService,
     private readonly emailService: EmailService,
   ) {}
 
@@ -34,13 +32,9 @@ export class TerminalService {
     return terminal;
   }
 
-  async getOneByUid({
-    uid_terminal,
-  }: {
-    uid_terminal: string;
-  }): Promise<Terminal> {
+  async getOneByUid(uid_kkt: string): Promise<Terminal> {
     const terminal = await this.terminalRepository.findOne({
-      where: { uid_terminal: uid_terminal },
+      where: { uid_terminal: uid_kkt },
       relations: ['active_card'],
     });
     if (!terminal) throw new NotFoundException('Terminal not found!');
@@ -50,11 +44,12 @@ export class TerminalService {
   async add(terminal: Partial<Terminal>): Promise<Terminal> {
     const terminal_old = await this.terminalRepository.findOne({
       where: { uid_terminal: terminal.uid_terminal },
+      relations: ['active_card'],
     });
-    if (terminal_old)
-      throw new ConflictException(
-        `Terminal with UID:${terminal.uid_terminal} already exists`,
-      );
+    if (terminal_old) {
+      console.log(`Terminal with UID:${terminal.uid_terminal} already exists`);
+      return terminal_old;
+    }
     const terminal_new = this.terminalRepository.create(terminal);
     return await this.terminalRepository.save(terminal_new);
   }
@@ -68,25 +63,58 @@ export class TerminalService {
     return await this.terminalRepository.save(terminal);
   }
 
-  async upsert(
-    terminal_updated: Partial<Terminal>,
-    card_updated?: Partial<Card>,
-  ): Promise<Terminal> {
-    const terminal = await this.terminalRepository.findOne({
-      where: { uid_terminal: terminal_updated.uid_terminal },
-      relations: ['active_card'],
-    });
-    if (!terminal) return await this.add(terminal_updated);
-    if (terminal.active_card && card_updated) {
-      if (!card_updated.end_date_card) return terminal;
-      else if (
-        terminal.active_card.end_date_card.getTime() >
-        new Date(card_updated.end_date_card).getTime()
-      )
-        return terminal;
+  async upsert(kkt_updated: Partial<Terminal>): Promise<Terminal> {
+    if (!kkt_updated) return;
+    if (!kkt_updated.active_card) return;
+
+    const kkt = await this.add(kkt_updated);
+
+    //Если ФН не был добавлен, то добавляем его
+    if (!kkt.active_card) {
+      kkt_updated.active_card = await this.cardService.add(
+        kkt_updated.active_card,
+      );
+      kkt.active_card = kkt_updated.active_card;
+      const kkt_merged = this.terminalRepository.merge(kkt, kkt_updated);
+      return await this.terminalRepository.save(kkt_merged);
     }
-    this.terminalRepository.merge(terminal, terminal_updated);
-    return await this.terminalRepository.save(terminal);
+
+    //Обвноялем данные терминала, если он уже существует
+    if (
+      kkt_updated.active_card &&
+      kkt.active_card.uid_card === kkt_updated.active_card.uid_card
+    ) {
+      const kkt_merged = this.terminalRepository.merge(kkt, kkt_updated);
+      return await this.terminalRepository.save(kkt_merged);
+    } else if (!kkt_updated.active_card) {
+      const kkt_merged = this.terminalRepository.merge(kkt, kkt_updated);
+      return await this.terminalRepository.save(kkt_merged);
+    }
+
+    //Если ФН обновился, проверяем дату окончания и меняем данные
+    if (
+      new Date(kkt.active_card.end_date_card).getTime() <
+      new Date(kkt_updated.active_card.end_date_card).getTime()
+    ) {
+      kkt_updated.active_card = await this.cardService.add(
+        kkt_updated.active_card,
+      );
+      kkt.active_card = kkt_updated.active_card;
+      const kkt_merged = this.terminalRepository.merge(kkt, kkt_updated);
+      return await this.terminalRepository.save(kkt_merged);
+    } else {
+      return kkt;
+    }
+  }
+
+  async attachCard(kkt_uid: string, card: Card): Promise<Terminal> {
+    const kkt = await this.getOneByUid(kkt_uid);
+    if (!kkt) {
+      throw new NotFoundException('Terminal not found!');
+    }
+    kkt.active_card = await this.cardService.add(card);
+    await this.terminalRepository.save(kkt);
+    return;
   }
 
   async remove(terminal_id: number): Promise<DeleteResult> {

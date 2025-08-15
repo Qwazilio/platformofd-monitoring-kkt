@@ -3,7 +3,7 @@ import KKTInfo from "@/components/modal/KKTInfo";
 import useModalWindow from "@/hooks/useModalWindow";
 
 interface KKTNodeProps{
-    kkt: TerminalEntity
+    kkt: KktEntity
 }
 export default function KKTNode({kkt}: KKTNodeProps) {
     const {createWindow} = useModalWindow();

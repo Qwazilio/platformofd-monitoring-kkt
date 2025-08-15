@@ -20,9 +20,14 @@ export default function KKTSort() {
 
     return(
         <div className={classes.sorts}>
-            <div onClick={() => setIsShowStock(!isShowStock)}>
+            <div
+                style={{
+                    backgroundColor: isShowDrop ? "gray" : "",
+                    cursor: isShowDrop ? "not-allowed" : "",
+                }}
+                onClick={() => setIsShowStock(!isShowStock)}>
                 <label>На складе</label>
-                <Checked value={isShowStock} setValue={setIsShowStock}/>
+                <Checked value={isShowStock} setValue={setIsShowStock} disabled={isShowDrop}/>
             </div>
             <div onClick={() => setIsShowDrop(!isShowDrop)}>
                 <label>Удаленные</label>

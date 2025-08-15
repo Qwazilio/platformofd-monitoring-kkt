@@ -11,7 +11,7 @@ interface ModalWindowProps extends ModalWindowBase {
     children?: React.ReactNode
 }
 export default function ModalWindow ({id, title, children} : ModalWindowProps) {
-    const {closeWindow} = useModalWindow()
+    const {closeWindow, upFromIndex} = useModalWindow()
     const [position, setPosition] = useState({ x: window.innerWidth/ 2 - 250, y:  50});
     const [fixPosition, setFixPosition] = useState({x: 0, y: 0});
     const [dragging, setDragging] = useState(false);
@@ -65,10 +65,11 @@ export default function ModalWindow ({id, title, children} : ModalWindowProps) {
                 left: `${position.x}px`,
                 top: `${position.y}px`,
             }}
+             onMouseDown={() => upFromIndex(id)}
         >
             <div className={classes.top}  onMouseDown={(event) => handleMouseDown(event)}>
               <div className={classes.title}>{title}</div>
-              <div className={classes.cancel} onClick={() => closeWindow(id)}><CancelCircleIcon color={"white"}/></div>
+              <div className={classes.cancel} onMouseUp={() => closeWindow(id)}><CancelCircleIcon color={"white"}/></div>
             </div>
             <div className={classes.body}>
                 {children}

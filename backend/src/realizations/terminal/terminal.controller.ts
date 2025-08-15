@@ -4,7 +4,6 @@ import { CardService } from '../card/card.service';
 import { Terminal } from 'src/entities/terminal.entity';
 import { EmailService } from '../email/email.service';
 
-
 @Controller('terminal')
 export class TerminalController {
   constructor(
@@ -24,8 +23,8 @@ export class TerminalController {
   }
 
   @Get()
-  async getTerminal(@Query('id') terminal_id: number): Promise<Terminal> {
-    return await this.terminalService.getOne({ terminal_id: terminal_id });
+  async getTerminal(@Query('id') kkt_id: number): Promise<Terminal> {
+    return await this.terminalService.getOne({ terminal_id: kkt_id });
   }
 
   @Get('test')

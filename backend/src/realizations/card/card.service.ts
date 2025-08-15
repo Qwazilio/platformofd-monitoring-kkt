@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Card } from 'src/entities/card.entity';
 import { Terminal } from 'src/entities/terminal.entity';
@@ -29,43 +25,35 @@ export class CardService {
     return card;
   }
 
-  async add(card: Card, terminal: Terminal): Promise<Card> {
-    const queryRunner =
-      this.cardRepository.manager.connection.createQueryRunner();
-    await queryRunner.startTransaction();
-
-    try {
-      const card_old = await queryRunner.manager.findOne(Card, {
-        where: { uid_card: card.uid_card },
-      });
-      if (card_old)
-        throw new ConflictException(
-          `Terminal with UID:${card.uid_card} already exists`,
-        );
-
-      const card_new = this.cardRepository.create({
-        uid_card: card.uid_card,
-        end_date_card: card.end_date_card,
-        terminal: terminal,
-      });
-      await queryRunner.manager.save(Card, card_new);
-      await queryRunner.commitTransaction();
-
-      return card_new;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      throw error;
-    } finally {
-      await queryRunner.release();
-    }
+  async getOneByUid(uid_card: string): Promise<Card> {
+    const card = await this.cardRepository.findOne({
+      where: { uid_card: uid_card },
+    });
+    if (!card) throw new NotFoundException('Card not found!');
+    return card;
   }
 
-  async upsert(card_updated: Card, terminal: Terminal): Promise<Card> {
+  async add(card: Card): Promise<Card> {
+    const card_old = await this.cardRepository.findOne({
+      where: { uid_card: card.uid_card },
+    });
+    if (card_old) {
+      return card_old;
+    }
+    const card_new = this.cardRepository.create({
+      uid_card: card.uid_card,
+      end_date_card: card.end_date_card,
+    });
+
+    return await this.cardRepository.save(card_new);
+  }
+
+  async upsert(card_updated: Card, kkt: Terminal): Promise<Card> {
     const card = await this.cardRepository.findOneBy({
       uid_card: card_updated.uid_card,
     });
     if (!card) {
-      return await this.add(card_updated, terminal);
+      return await this.add(card_updated);
     }
     this.cardRepository.merge(card, {
       uid_card: card_updated.uid_card,

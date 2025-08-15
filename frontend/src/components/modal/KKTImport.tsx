@@ -8,13 +8,13 @@ import useModalWindow from "@/hooks/useModalWindow";
 
 type KktImportProps = ModalWindowBase
 export default function KKTImport({id}: KktImportProps) {
-    const [kkt, setKkt] = useState<TerminalEntity[]>([]);
+    const [kkt, setKkt] = useState<KktEntity[]>([]);
     const {importKkt} = useKKT();
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const {closeWindow} = useModalWindow();
 
     useEffect(() =>{
-      setIsDisabled(kkt.length > 0)
+      setIsDisabled(!(kkt.length > 0))
     }, [kkt])
 
     const clickSendOnServer = () => {

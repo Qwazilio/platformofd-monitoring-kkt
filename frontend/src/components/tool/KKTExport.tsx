@@ -1,11 +1,11 @@
 import * as XLSX from 'xlsx';
 import {useKKTStore} from "@/hooks/store/useKKTStore";
 
-export default function TerminalExport () {
+export default function KktExport () {
     const {filtredKkts} = useKKTStore();
 
     const ExportToXSLS = () => {
-        const exportData = filtredKkts.map((kkt: TerminalEntity) => ({
+        const exportData = filtredKkts.map((kkt: KktEntity) => ({
             "Название" : kkt.name_terminal,
             "Адрес" : kkt.address,
             "Рег. Номер" : kkt.reg_number,

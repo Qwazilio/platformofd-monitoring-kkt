@@ -23,7 +23,7 @@ export default function KKTList() {
           <label>Срок подписки</label>
           <label>Срок ФН</label>
         </div>
-        {filtredKkts.map((kkt: TerminalEntity, index: number) => <KKTNode key={index} kkt={kkt}/>)}
+        {filtredKkts.map((kkt: KktEntity, index: number) => <KKTNode key={index} kkt={kkt}/>)}
       </div>
     </div>
   );

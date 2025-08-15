@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import * as XLSX from "xlsx";
 
 interface TerminalImportXLSXProps{
-    setKkt: Dispatch<SetStateAction<TerminalEntity[] | []>>
+    setKkt: Dispatch<SetStateAction<KktEntity[] | []>>
 }
 export default function KKTImportXLSX({setKkt} : TerminalImportXLSXProps) {
 
@@ -23,7 +23,7 @@ export default function KKTImportXLSX({setKkt} : TerminalImportXLSXProps) {
           const worksheet = workbook.Sheets[sheetName];
           const json = XLSX.utils.sheet_to_json(worksheet);
     
-          const terminalData: TerminalEntity[] = json.map((row) => ({
+          const terminalData: KktEntity[] = json.map((row) => ({
             organization: row["Наименование магазина"] as string,
             name_terminal: row["Наименование кассы"] as string,
             uid_terminal: row["ЗН"] as string,

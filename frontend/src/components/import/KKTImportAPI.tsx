@@ -15,7 +15,7 @@ interface Kkt {
 }
 
 interface TerminalImportAPIProps{
-    setKkt: Dispatch<SetStateAction<TerminalEntity[]>>
+    setKkt: Dispatch<SetStateAction<KktEntity[]>>
 }
 export default function KKTImportAPI({setKkt} : TerminalImportAPIProps) {
 
@@ -28,7 +28,7 @@ export default function KKTImportAPI({setKkt} : TerminalImportAPIProps) {
             const {kkts, branches} = response.data.kktList.orgBranches[0]
 
             //Форматирование данных
-            const sortKkts: TerminalEntity[] = kkts.map((kkt : Kkt) => ({
+            const sortKkts: KktEntity[] = kkts.map((kkt : Kkt) => ({
                 name_terminal: kkt.kktName,
                 uid_terminal: kkt.kktNumber,
                 end_date_sub: kkt.kktCurrentSubscriptionDateTill,
@@ -41,10 +41,10 @@ export default function KKTImportAPI({setKkt} : TerminalImportAPIProps) {
                     uid_card: kkt.kktFN,
                     end_date_card: kkt.kktFnDateTill
                 } as CardEntity
-            } as TerminalEntity))
+            } as KktEntity))
 
             //Забыл чет
-            const sortKktsInStores: TerminalEntity[] = branches.flatMap(branch =>
+            const sortKktsInStores: KktEntity[] = branches.flatMap(branch =>
                 branch.kkts.map((kkt: Kkt) => ({
                     name_terminal: kkt.kktName,
                     uid_terminal: kkt.kktNumber,
@@ -59,7 +59,7 @@ export default function KKTImportAPI({setKkt} : TerminalImportAPIProps) {
                         uid_card: kkt.kktFN,
                         end_date_card: kkt.kktFnDateTill,
                     } as CardEntity
-                } as TerminalEntity))
+                } as KktEntity))
             );
             toast.success("Данные готовы к импорту");
             setKkt([...sortKkts, ...sortKktsInStores])

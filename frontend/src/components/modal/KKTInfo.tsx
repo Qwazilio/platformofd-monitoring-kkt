@@ -11,7 +11,7 @@ interface TerminalInfoProps extends ModalWindowBase{
 export default function KKTInfo({id, kkt_id} : TerminalInfoProps) {
     const {updateKkt} = useKKT();
     const {closeWindow} = useModalWindow();
-    const [kkt, setKkt] = useState<TerminalEntity | null>(null)
+    const [kkt, setKkt] = useState<KktEntity | null>(null)
 
     useEffect(() => {
         getInfo();

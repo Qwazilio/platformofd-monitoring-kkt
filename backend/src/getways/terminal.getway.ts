@@ -16,6 +16,7 @@ import { TerminalService } from 'src/realizations/terminal/terminal.service';
 @WebSocketGateway({
   cors: true,
   transport: ['websocket'],
+  namespace: 'KKT',
 })
 export class TerminalGateway
   implements OnGatewayConnection, OnGatewayDisconnect
@@ -30,8 +31,8 @@ export class TerminalGateway
 
   async handleConnection(client: Socket) {
     try {
-      const kkt = await this.terminalService.getAll();
-      client.emit('kktPull', kkt);
+      const kkts = await this.terminalService.getAll();
+      client.emit('kktsList', kkts);
     } catch (error) {
       console.error(error);
     }
@@ -41,44 +42,33 @@ export class TerminalGateway
     //console.log(`Client disconnected: ${client.id}`);
   }
 
-  @SubscribeMessage('import')
+  @SubscribeMessage('importKkts')
   async handleImport(
     @ConnectedSocket() client: Socket,
-    @MessageBody() terminals: [Terminal, Card][],
+    @MessageBody() kkts: Partial<Terminal>[],
   ) {
-    for (const [terminal, card] of terminals) {
-      const _terminal = await this.terminalService.upsert(terminal, card);
-      const _card = await this.cardService.upsert(card, _terminal);
-      if (_card)
-        if (
-          !_terminal.active_card ||
-          _terminal.active_card.end_date_card.getTime() <
-            new Date(_card.end_date_card).getTime()
-        )
-          await this.terminalService.update({
-            id: _terminal.id,
-            active_card: _card,
-          });
+    for (const kkt of kkts) {
+      await this.terminalService.upsert(kkt);
     }
-    this.sendTerminalList();
+    await this.sendTerminalList();
   }
 
-  @SubscribeMessage('updateTerminal')
-  async handleUpdate(@MessageBody() terminal: Terminal) {
-    const updated_terminal = await this.terminalService.update(terminal);
-    this.sendTerminalList();
+  @SubscribeMessage('updateKkt')
+  async handleUpdate(@MessageBody() kkt: Terminal) {
+    await this.terminalService.update(kkt);
+    this.server.emit('kktUpdated', kkt);
   }
 
   @SubscribeMessage('createFN')
   async handleCreateFN(
-    @MessageBody() { card, uid_terminal }: { card: Card; uid_terminal: string },
+    @MessageBody() { card, uid_kkt }: { card: Card; uid_kkt: string },
   ) {
-    const terminal = await this.terminalService.getOneByUid({ uid_terminal });
-    const new_card = await this.cardService.add(card, terminal);
+    const kkt = await this.terminalService.attachCard(uid_kkt, card);
+    this.server.emit('kktUpdated', kkt);
   }
 
   async sendTerminalList() {
     const terminals = await this.terminalService.getAll();
-    this.server.emit('kktListChanged', terminals);
+    this.server.emit('kktsList', terminals);
   }
 }
