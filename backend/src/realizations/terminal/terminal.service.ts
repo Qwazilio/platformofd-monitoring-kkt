@@ -184,7 +184,7 @@ export class TerminalService {
         );
       };
       console.log(`Message send to ${recipient}`);
-      //sendMessage(terminal.active_card.end_date_card, recipient);
+      sendMessage(terminal.active_card.end_date_card, recipient);
     });
   }
 }
