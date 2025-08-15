@@ -47,24 +47,42 @@ export class TerminalGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() kkts: Partial<Terminal>[],
   ) {
-    for (const kkt of kkts) {
-      await this.terminalService.upsert(kkt);
+    try {
+      for (const kkt of kkts) {
+        await this.terminalService.upsert(kkt);
+      }
+      await this.sendTerminalList();
+      return true;
+    } catch (error) {
+      console.error('Error importing KKTs:', error);
+      return false;
     }
-    await this.sendTerminalList();
   }
 
   @SubscribeMessage('updateKkt')
   async handleUpdate(@MessageBody() kkt: Terminal) {
-    await this.terminalService.update(kkt);
-    this.server.emit('kktUpdated', kkt);
+    try {
+      await this.terminalService.update(kkt);
+      this.server.emit('kktUpdated', kkt);
+      return true;
+    } catch (error) {
+      console.error('Error updating KKT:', error);
+      return false;
+    }
   }
 
   @SubscribeMessage('createFN')
   async handleCreateFN(
     @MessageBody() { card, uid_kkt }: { card: Card; uid_kkt: string },
   ) {
-    const kkt = await this.terminalService.attachCard(uid_kkt, card);
-    this.server.emit('kktUpdated', kkt);
+    try {
+      const kkt = await this.terminalService.attachCard(uid_kkt, card);
+      this.server.emit('kktUpdated', kkt);
+      return true;
+    } catch (error) {
+      console.error('Error creating FN:', error);
+      return false;
+    }
   }
 
   async sendTerminalList() {

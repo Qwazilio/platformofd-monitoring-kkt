@@ -82,9 +82,10 @@ export class TerminalService {
     //Обвноялем данные терминала, если он уже существует
     if (
       kkt_updated.active_card &&
-      kkt.active_card.uid_card === kkt_updated.active_card.uid_card
+      kkt.active_card.uid_card == kkt_updated.active_card.uid_card
     ) {
       const kkt_merged = this.terminalRepository.merge(kkt, kkt_updated);
+      console.log(kkt_merged);
       return await this.terminalRepository.save(kkt_merged);
     } else if (!kkt_updated.active_card) {
       const kkt_merged = this.terminalRepository.merge(kkt, kkt_updated);

@@ -5,6 +5,7 @@ import KKTImportAPI from "@/components/import/KKTImportAPI";
 import useKKT from "@/hooks/useKKT";
 import {ModalWindowBase} from "@/ui/ModalWindow";
 import useModalWindow from "@/hooks/useModalWindow";
+import {toast} from "react-toastify";
 
 type KktImportProps = ModalWindowBase
 export default function KKTImport({id}: KktImportProps) {
@@ -17,9 +18,10 @@ export default function KKTImport({id}: KktImportProps) {
       setIsDisabled(!(kkt.length > 0))
     }, [kkt])
 
-    const clickSendOnServer = () => {
-        importKkt(kkt);
-        closeWindow(id)
+    const clickSendOnServer = async () => {
+        const response = await importKkt(kkt);
+        if(response) closeWindow(id)
+        else toast.error('Ошибка при загрузке терминалов на сервер!')
     }
 
     return (

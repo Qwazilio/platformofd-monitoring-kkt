@@ -27,12 +27,22 @@ export default function useKKT(){
 
 
 
-    const importKkt = (terminals: KktEntity[]) => {
-        socket?.emit('importKkts', terminals)
+    const importKkt = async (terminals: KktEntity[]): Promise<boolean> => {
+        return new Promise((resolve) => {
+            socket?.emit('importKkts', terminals, (response: boolean) => {
+                console.log(response);
+                resolve(response);
+            })
+        })
     }
 
-    const updateKkt = (kkt: KktEntity) => {
-        socket?.emit('updateKkt', kkt)
+    const updateKkt = (kkt: KktEntity): Promise<boolean> => {
+        return new Promise((resolve) => {
+            socket?.emit('updateKkt', kkt, (response: boolean) => {
+                console.log(`ККТ ${kkt.name_terminal} обработана сервером!`);
+                resolve(response);
+            })
+        })
     }
 
     return {importKkt, updateKkt, sortByFN, sortBySub}

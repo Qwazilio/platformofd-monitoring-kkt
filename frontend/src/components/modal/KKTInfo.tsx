@@ -4,6 +4,7 @@ import {ModalWindowBase} from "@/ui/ModalWindow";
 import axiosDefault from "@/lib/axiosDefault";
 import useKKT from "@/hooks/useKKT";
 import useModalWindow from "@/hooks/useModalWindow";
+import {toast} from "react-toastify";
 
 interface TerminalInfoProps extends ModalWindowBase{
     kkt_id: number
@@ -57,9 +58,10 @@ export default function KKTInfo({id, kkt_id} : TerminalInfoProps) {
         }));
     };
 
-    const clickUpdateKkt = () => {
-        updateKkt(kkt)
-        closeWindow(id);
+    const clickUpdateKkt = async () => {
+        const response = await updateKkt(kkt)
+        if(response) closeWindow(id)
+        else toast.error('Ошибка при обновлении ККТ!')
     }
 
     return(
