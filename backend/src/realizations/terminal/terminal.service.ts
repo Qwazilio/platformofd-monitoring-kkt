@@ -153,6 +153,12 @@ export class TerminalService {
           },
         },
         relations: ['active_card'],
+        order: {
+          active_card: {
+            end_date_card: 'ASC', // сортировка по дате окончания ФН
+          },
+          organization: 'ASC', // доп. сортировка
+        },
       }),
     ]);
 

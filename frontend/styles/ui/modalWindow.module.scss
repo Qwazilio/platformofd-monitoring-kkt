@@ -2,7 +2,7 @@
 
 .wrapper{
     background-color: variables.$background-color;
-    position: absolute;
+    position: fixed;
     user-select: none;
     border-radius: variables.$border-radius-em;    
     border: solid variables.$border-color;
