@@ -155,36 +155,56 @@ export class TerminalService {
         relations: ['active_card'],
       }),
     ]);
-    if (!terminals) throw new NotFoundException('Terminals not found!');
-    terminals.forEach((terminal: Terminal) => {
-      if (!terminal.active_card) return;
-      console.log(terminal);
-      const time = new Date(terminal.active_card.end_date_card).getTime();
-      const diffMs = time - Date.now();
-      const diffM = Math.round(diffMs / 1000 / 60 / 60 / 24);
-      const sendMessage = (date: Date, recipient: string[]): void => {
-        const rawDate = new Date(date);
-        const formattedDate = `${String(rawDate.getDate()).padStart(2, '0')}-${String(rawDate.getMonth() + 1).padStart(2, '0')}-${rawDate.getFullYear()}`;
-        this.emailService.sendEmail(
-          recipient,
-          'Оповещение о терминалах (ФН)',
-          `
-            <div>
-              <h2>В терминале "${terminal.name_terminal}" заканчивается ФН</h2>
-              <h3>Данные терминала:</h3> 
-              <ul>
-                <li>Организация: ${terminal.organization}</li>
-                <li>ККТ: ${terminal.uid_terminal}</li>
-                <li>Адрес: ${terminal.address}</li>
-                <li>Дата окончания ФН: ${formattedDate}</li>
-              </ul>
-              <h3>Осталось дней: ${diffM}</h3>
-            </div>
-          `,
-        );
-      };
-      console.log(`Message send to ${recipient}`);
-      //sendMessage(terminal.active_card.end_date_card, recipient);
-    });
+
+    if (!terminals || terminals.length === 0) {
+      throw new NotFoundException('Terminals not found!');
+    }
+
+    // Собираем список терминалов в HTML
+    const terminalList = terminals
+      .filter((terminal) => terminal.active_card)
+      .map((terminal) => {
+        const time = new Date(terminal.active_card.end_date_card).getTime();
+        const diffMs = time - Date.now();
+        const diffM = Math.round(diffMs / 1000 / 60 / 60 / 24);
+
+        const rawDate = new Date(terminal.active_card.end_date_card);
+        const formattedDate = `${String(rawDate.getDate()).padStart(2, '0')}-${String(
+          rawDate.getMonth() + 1,
+        ).padStart(2, '0')}-${rawDate.getFullYear()}`;
+
+        return `
+        <li>
+          <b>${terminal.name_terminal}</b><br/>
+          Организация: ${terminal.organization}<br/>
+          ККТ: ${terminal.uid_terminal}<br/>
+          Адрес: ${terminal.address}<br/>
+          Дата окончания ФН: ${formattedDate}<br/>
+          Осталось дней: ${diffM}
+        </li>
+      `;
+      })
+      .join('');
+
+    // Отправляем одно письмо со всеми терминалами
+    const htmlMessage = `
+    <div>
+      <h2>Оповещение о терминалах (ФН)</h2>
+      <p>Следующие терминалы подходят к окончанию действия ФН:</p>
+      <ul>
+        ${terminalList}
+      </ul>
+    </div>
+  `;
+
+    // await this.emailService.sendEmail(
+    //   recipient,
+    //   'Оповещение о терминалах (ФН)',
+    //   htmlMessage,
+    // );
+
+    console.log(
+      `Message send to ${recipient} (терминалов: ${terminals.length})`,
+    );
   }
 }
