@@ -32,7 +32,7 @@ export class TaskService {
   }
 
   async nearWorkTerminalsSPB(): Promise<void> {
-    const recipient = [process.env.EMAIL_ADMIN];
+    const recipient = [process.env.EMAIL_SKLAD, process.env.EMAIL_ADMIN];
     //const recipient = [process.env.EMAIL_ADMIN];
     const findOptions = {
       deleted: false,
@@ -47,7 +47,7 @@ export class TaskService {
   }
 
   async nearWorkTerminalsRegion(): Promise<void> {
-    const recipient = [process.env.EMAIL_ADMIN];
+    const recipient = [process.env.EMAIL_SKLAD, process.env.EMAIL_ADMIN];
     //const recipient = [process.env.EMAIL_ADMIN];
     const findOptions = {
       deleted: false,
