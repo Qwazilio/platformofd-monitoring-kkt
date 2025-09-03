@@ -8,6 +8,7 @@ export default function useSocket(namespace?: string) {
     const [socket, setSocket] = useState<Socket | null>(null);
 
     useEffect(() => {
+        console.log("render sock")
         if (!SOCKET_URL) {
             throw new Error("NEXT_PUBLIC_BACKEND_SERVER_URL is not defined");
         }
