@@ -72,18 +72,18 @@
         }
     }
 
-    .information, .warning, .done, .broken{
+    .attention, .warning, .done, .broken{
         color: variables.$text-color !important;
     }
 
-    .information{
+    .attention{
         background: variables.$background-color-info !important;
     }
     
     .warning{
         background: variables.$background-color-warning !important;
     }
-    
+
     .done{
         background: variables.$background-color-done !important;
     }

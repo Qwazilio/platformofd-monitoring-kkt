@@ -14,7 +14,7 @@ export default function KKTList() {
 
   return (
     <div>
-      <span>Показано {countKkts} теминалов</span>
+      <span>Показано {countKkts} терминалов</span>
       <div className={classes.wrapper}>
         <div className={classes.headerTerminal}>
           <label>Название</label>

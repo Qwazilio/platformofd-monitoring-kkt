@@ -110,6 +110,9 @@ export default function KKTInfo({id, kkt_id} : TerminalInfoProps) {
                 <div>
                     <label>Удален</label> <input onChange={onChangeCheckbox} name="deleted" type='checkbox' checked={kkt?.deleted}/>
                 </div>
+                <div>
+                    <label>ФН установлен</label> <input onChange={onChangeCheckbox} name="hasFN" type='checkbox' checked={kkt?.hasFN}/>
+                </div>
                 <button onClick={clickUpdateKkt}>Сохранить</button>
             </div>
             :

@@ -58,4 +58,7 @@ export class Terminal {
 
   @Column({ nullable: false, default: false })
   updated: boolean;
+
+  @Column({ nullable: false, default: true })
+  hasFN: boolean;
 }
