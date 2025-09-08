@@ -15,9 +15,8 @@ export default function KKTNode({kkt}: KKTNodeProps) {
 
     //Определяет статус терминала устанавливая цвет
     const statusKkt = () => {
-        if(kkt.broken) return classes.broken
-        if(!kkt.hasFN && kkt.updated) return classes.attention;
         if(!kkt.hasFN) return classes.warning;
+        if(kkt.broken) return classes.broken;
         if(kkt.updated) return classes.done;
     }
 
