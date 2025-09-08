@@ -85,6 +85,7 @@ export class TerminalService {
       kkt.active_card.uid_card == kkt_updated.active_card.uid_card
     ) {
       const kkt_merged = this.terminalRepository.merge(kkt, kkt_updated);
+      console.log(kkt_merged);
       return await this.terminalRepository.save(kkt_merged);
     } else if (!kkt_updated.active_card) {
       const kkt_merged = this.terminalRepository.merge(kkt, kkt_updated);
@@ -202,11 +203,11 @@ export class TerminalService {
     </div>
   `;
 
-    await this.emailService.sendEmail(
-      recipient,
-      'Оповещение о терминалах (ФН)',
-      htmlMessage,
-    );
+    // await this.emailService.sendEmail(
+    //   recipient,
+    //   'Оповещение о терминалах (ФН)',
+    //   htmlMessage,
+    // );
 
     console.log(
       `Message send to ${recipient} (терминалов: ${terminals.length})`,
