@@ -23,7 +23,7 @@ import { TaskModule } from './realizations/task/task.module';
       transport: `smtps://${process.env.SMTP_USER}:${process.env.SMTP_PASSWORD}@${process.env.SMTP_HOST}`,
     }),
     TypeOrmModule.forRoot({
-      database: 'C:\\SQLite\\Monitoring OFD\\database.sqlite',
+      database: process.env.DB_ROOT,
       entities: [Terminal, Card],
       synchronize: true,
       //entities: [__dirname + '/**/*.entity{.ts}'],
