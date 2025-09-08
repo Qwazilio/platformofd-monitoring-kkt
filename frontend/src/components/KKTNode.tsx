@@ -9,21 +9,26 @@ export default function KKTNode({kkt}: KKTNodeProps) {
     const {createWindow} = useModalWindow();
 
     //Для подробного просмотра данных терминала
-    const viewTerminal = async (kkt_id: number) => {
+    const viewKkt = async (kkt_id: number) => {
         createWindow((id) => <KKTInfo id={id} kkt_id={kkt_id}/>, "Информация")
     };
+
+    //Определяет статус терминала устанавливая цвет
+    const statusKkt = () => {
+        if(kkt.broken) return classes.broken
+        if(!kkt.hasFN && kkt.updated) return classes.attention;
+        if(!kkt.hasFN) return classes.warning;
+        if(kkt.updated) return classes.done;
+    }
 
     return (
         <div
             className={`
             ${classes.terminal}
-            ${
-                (kkt.broken) ? classes.broken :
-                    (kkt.updated) ? classes.done : ""
-            }
+            ${statusKkt()}
         `}
             key={kkt.uid_terminal}
-            onClick={() => viewTerminal(kkt.id)}
+            onClick={() => viewKkt(kkt.id)}
         >
             <div className={classes.info}>{kkt.name_terminal}</div>
             <div className={classes.info}>{kkt.address}</div>

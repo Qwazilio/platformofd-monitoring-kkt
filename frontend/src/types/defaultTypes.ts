@@ -15,6 +15,7 @@ interface KktEntity {
     stock?: boolean
     broken?: boolean
     notification?: string
+    hasFN?: boolean
 }
 
 interface CardEntity{
