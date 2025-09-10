@@ -1,6 +1,7 @@
 interface KktEntity {
     id?: number
     uid_terminal: string
+    kkt_model?: string
     organization?: string
     name_terminal: string
     name_store?: string

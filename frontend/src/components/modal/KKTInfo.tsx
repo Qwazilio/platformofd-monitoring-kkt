@@ -96,6 +96,8 @@ export default function KKTInfo({id, kkt_id} : TerminalInfoProps) {
                 }/> 
                 <label>РНМ</label>
                 <input onChange={onChangeInfo} name="reg_number" readOnly value={kkt?.reg_number || ''}/>
+                <label>Модель</label>
+                <input name="kkt_model" value={kkt?.kkt_model}/>
                 <label>Комментарий</label>      
                 <input onChange={onChangeInfo} name="notification" value={kkt?.notification || ''}/>
                 <div>

@@ -6,6 +6,7 @@ interface Kkt {
     kktName: string; // Название ККТ
     kktNumber: string; // Уникальный номер ККТ
     kktRegNumber?: string;
+    kktModel?: string;
     kktCurrentSubscriptionDateTill: string | Date; // Дата окончания подписки
     kktLastCheckStatusDate: string | Date; // Последняя проверка состояния
     kktFN: string; // Уникальный идентификатор карты (ФН)
@@ -31,6 +32,7 @@ export default function KKTImportAPI({setKkt} : TerminalImportAPIProps) {
             const sortKkts: KktEntity[] = kkts.map((kkt : Kkt) => ({
                 name_terminal: kkt.kktName,
                 uid_terminal: kkt.kktNumber,
+                kkt_model: kkt.kktModel,
                 end_date_sub: kkt.kktCurrentSubscriptionDateTill,
                 organization: response.data.kktList.orgName,
                 address: kkt.retailAddress,
@@ -48,6 +50,7 @@ export default function KKTImportAPI({setKkt} : TerminalImportAPIProps) {
                 branch.kkts.map((kkt: Kkt) => ({
                     name_terminal: kkt.kktName,
                     uid_terminal: kkt.kktNumber,
+                    kkt_model: kkt.kktModel,
                     end_date_sub: kkt.kktCurrentSubscriptionDateTill,
                     organization: response.data.kktList.orgName,
                     address: kkt.retailAddress,
