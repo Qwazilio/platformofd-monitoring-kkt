@@ -14,7 +14,8 @@ export default function KktExport () {
             "Организация" : kkt.organization,
             "ФН" : kkt.active_card.uid_card,
             "Дата" : new Date(kkt.active_card.end_date_card),
-            "Комментарий" : kkt.notification
+            "Комментарий" : kkt.notification,
+            "Модель" : kkt.kkt_model
         }))
         const fileName = `monitoring_ofd ${Date.now()}`
         const worksheet = XLSX.utils.json_to_sheet(exportData);
