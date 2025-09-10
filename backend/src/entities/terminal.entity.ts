@@ -17,6 +17,9 @@ export class Terminal {
   uid_terminal: string;
 
   @Column({ nullable: true })
+  kkt_model: string;
+
+  @Column({ nullable: true })
   reg_number: number;
 
   @Column({ nullable: false })
