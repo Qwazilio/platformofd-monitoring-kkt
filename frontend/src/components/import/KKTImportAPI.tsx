@@ -81,6 +81,7 @@ export default function KKTImportAPI({setKkt} : TerminalImportAPIProps) {
             <button onClick={() => fetchTerminals('/api/mmr')}>ММР</button>
             <button onClick={() => fetchTerminals('/api/db')}>Дом Быта</button>
             <button onClick={() => fetchTerminals('/api/neo')}>НеоСервисе</button>
+            <button onClick={() => fetchTerminals('/api/ipk3')}>Кондрашин Никита</button>
         </div>
     )
 }
