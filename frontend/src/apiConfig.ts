@@ -6,4 +6,4 @@ export const organizations = [
     { id: 'db', name: "Дом Быта", token: process.env.DB_TOKEN },
     { id: 'neo', name: "НеоСервисе", token: process.env.NEO_TOKEN },
     { id: 'ipk2', name: "Климакин", token: process.env.IPK2_TOKEN }
-] as OrganizationEntity[];
+];
