@@ -71,4 +71,4 @@ coverage/
 *.sql.*
 
 #file with secure information
-src/apiConfig.ts
+frontend/src/apiConfig.ts
