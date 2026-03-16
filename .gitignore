@@ -72,3 +72,4 @@ coverage/
 
 #file with secure information
 apiConfig.ts
+frontend/src/apiConfig.ts
