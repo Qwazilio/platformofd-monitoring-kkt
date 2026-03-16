@@ -25,3 +25,8 @@ interface CardEntity{
     end_date_card: Date
     terminal?: KktEntity
 }
+
+interface OrganizationEntity {
+    name: string
+    token: string
+}
