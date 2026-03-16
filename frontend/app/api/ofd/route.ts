@@ -6,12 +6,10 @@ export async function GET(req: Request) {
     const orgId = searchParams.get("org");
 
     const org = organizations.find(o => o.id === orgId);
-
+    
     if (!org || !org.token) {
         return Response.json({ error: "Organization not found" }, { status: 404 });
     }
 
-    const data = await ApiRequestForDataKKT(org.token);
-
-    return Response.json(data);
+    return await ApiRequestForDataKKT(org.token);
 }
