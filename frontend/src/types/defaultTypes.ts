@@ -27,6 +27,7 @@ interface CardEntity{
 }
 
 interface OrganizationEntity {
+    id: string
     name: string
     token: string
 }

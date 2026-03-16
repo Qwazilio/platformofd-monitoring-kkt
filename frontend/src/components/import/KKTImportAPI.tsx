@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Dispatch, SetStateAction} from "react";
 import {toast} from "react-toastify";
+import {organizations} from "@/apiConfig";
 
 interface Kkt {
     kktName: string; // Название ККТ
@@ -75,13 +76,9 @@ export default function KKTImportAPI({setKkt} : TerminalImportAPIProps) {
     return(
         <div>
             <h2 style={{textAlign: "center", fontSize: '1.2em'}}>Импорт из ОФД</h2>
-            <button onClick={() => fetchTerminals('/api/ipk')}>ИПК</button>
-            <button onClick={() => fetchTerminals('/api/ipg')}>ИПЖ</button>
-            <button onClick={() => fetchTerminals('/api/mm')}>ММ</button>
-            <button onClick={() => fetchTerminals('/api/mmr')}>ММР</button>
-            <button onClick={() => fetchTerminals('/api/db')}>Дом Быта</button>
-            <button onClick={() => fetchTerminals('/api/neo')}>НеоСервисе</button>
-            <button onClick={() => fetchTerminals('/api/ipk3')}>Кондрашин Никита</button>
+            {organizations.map((org, index) => (
+                <button key={index} onClick={() => fetchTerminals(`/api/ofd?org=${org.id}`)}>{org.name}</button>
+            ))}
         </div>
     )
 }
